@@ -7,7 +7,8 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "push": "git push origin $1 && git push origin2 $1"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.5.1",
@@ -50,5 +51,8 @@
       "json",
       "node"
     ]
+  },
+  "config": {
+    "branch": ""
   }
 }
