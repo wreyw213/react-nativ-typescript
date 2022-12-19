@@ -8,23 +8,16 @@
  * @format
  */
 
-import React, { type PropsWithChildren } from 'react';
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from 'react-native';
+import React from 'react';
+import { SafeAreaView, StatusBar, StyleSheet, Text, useColorScheme, View } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import DrawerStack from './src/navigation/DrawerStack';
 
-import { createDrawerNavigator } from '@react-navigation/drawer';
 
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
 function DetailsScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -33,23 +26,22 @@ function DetailsScreen() {
   );
 }
 
+
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const Stack = createNativeStackNavigator();
-  const Drawer = createDrawerNavigator();
-  {/* <Drawer.Navigator initialRouteName="Home">
-        <Drawer.Screen name="Home" component={HomeScreen} />
-        <Drawer.Screen name="Notifications" component={NotificationsScreen} />
-      </Drawer.Navigator> */}
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: isDarkMode ? 'black' : 'white' }}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={'black'}
       />
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen options={{ title: 'Home' }} name="Home" component={HomeScreen} />
+      <NavigationContainer >
+        <Stack.Navigator screenOptions={{
+          headerShown: false
+        }}>
+          <Stack.Screen options={{ title: 'DrawerStack' }} name='DrawerStack' component={DrawerStack} />
           <Stack.Screen options={{ title: 'Details' }} name="Details" component={DetailsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
