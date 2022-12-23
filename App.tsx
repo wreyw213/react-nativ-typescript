@@ -15,6 +15,8 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DrawerStack from './src/navigation/DrawerStack';
+import { Provider, useSelector } from 'react-redux';
+import { RootState } from './src/library/redux/store';
 
 
 
@@ -30,8 +32,10 @@ function DetailsScreen() {
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const Stack = createNativeStackNavigator();
+  const { loading } = useSelector((state: RootState) => state.homeSlice)
 
   return (
+
     <SafeAreaView style={{ flex: 1, backgroundColor: isDarkMode ? 'black' : 'white' }}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
