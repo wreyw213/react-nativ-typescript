@@ -1,10 +1,16 @@
-import axios, { AxiosHeaders, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosHeaders, AxiosRequestConfig } from 'axios';
 
-type Method = 'get' | 'GET' | 'delete' | 'DELETE' | 'head' | 'HEAD' | 'options' | 'OPTIONS' |
+export type Method = 'get' | 'GET' | 'delete' | 'DELETE' | 'head' | 'HEAD' | 'options' | 'OPTIONS' |
     'post' | 'POST' | 'put' | 'PUT' | 'patch' | 'PATCH';
 
+type ApiResposneData<T> = {
+    success: boolean,
+    message: string,
+    data: T
+}
+
 type AxiosResponse<T> = {
-    data: T;
+    data: ApiResposneData<T>;
     status: number;
     statusText: string;
     headers: any;
@@ -26,11 +32,24 @@ export const apiCall = async <T>(method: Method, url: string, data?: any, header
         headers: requestHeaders,
         ...options
     };
+
     try {
         const response = await axios(requestOptions);
         return response;
-    } catch (error) {
-        console.error(error);
-        throw error;
+    } catch (error: any) {
+        throw apiError(error);
     }
 };
+
+
+export const apiError = (err: AxiosError & any): string => {
+    if (err.response && err.response.data) {
+        return err.response.data?.message
+    } else if (err.response) {
+        return err.response
+    } else if (err.message) {
+        return err.message
+    } else {
+        return "Something went wrong.please try again"
+    }
+}

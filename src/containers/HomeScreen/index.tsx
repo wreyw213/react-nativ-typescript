@@ -13,7 +13,7 @@ import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 import { PinchGesture } from "react-native-gesture-handler/lib/typescript/handlers/gestures/pinchGesture";
 import FlatItem from "./FlatItem";
-import { apiCall } from "../../library/apis";
+import { apiCall } from "../../library/apis/api";
 
 type Props = NativeStackScreenProps<any> & DrawerScreenProps<any>
 
