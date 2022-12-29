@@ -1,19 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { DrawerScreenProps } from "@react-navigation/drawer";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Alert, FlatList, FlatListProps, Keyboard, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useIsFocused } from "@react-navigation/native";
-import styles from "./styles";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setMessage } from "../../library/redux/reducer";
-import { AppDispatch, RootState } from "../../library/redux/store";
-import { runOnce } from "../../library/utils";
-import { Gesture, GestureDetector } from "react-native-gesture-handler";
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
-import { PinchGesture } from "react-native-gesture-handler/lib/typescript/handlers/gestures/pinchGesture";
+import { AppDispatch, } from "../../library/redux/store";
 import FlatItem from "./FlatItem";
-import { apiCall } from "../../library/apis/api";
+import { getUsers } from "../../library/apis/userApis";
 
 type Props = NativeStackScreenProps<any> & DrawerScreenProps<any>
 
@@ -45,45 +39,27 @@ type obj = {
 	id: number,
 	title: string
 }
-type DATA = Array<obj>
+type UsersData = Array<obj>
 // let LayoutArr = [] as Array<any>
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
-	const isFocused = useIsFocused()
 	const flatListRef = useRef<FlatList>(null);
 	const dispatch = useDispatch<AppDispatch>()
-	const [count, setCount] = useState(1)
 	const [data, setData] = useState<Array<obj>>([])
-	const [selected, setSelected] = useState<DATA>([])
-
-	const position = useSharedValue(0);
-	const rotation = useSharedValue(0);
-	const savedRotation = useSharedValue(0);
 
 	useEffect(() => {
-		if (!isFocused) {
-			setData([])
-		} else {
-			// console.log("erhjre");
+		setData(DATA.concat({ id: 221, title: new Date().getTime().toString() }))
 
-			setData(DATA.concat({ id: 221, title: new Date().getTime().toString() }))
-			// const listenrt = Keyboard.addListener('keyboardDidShow', (e) => console.log("keyBoard Show"))
-			// return () => {
-			// 	console.log("cleanUp running =>>>>>>>")
-			// 	listenrt.remove()
-			// }
-		}
 		setTimeout(() => {
 			dispatch(setMessage("hello world " + new Date().toLocaleDateString()))
 		}, 2000)
-	}, [isFocused])
+	}, [])
 
 	const fetchusers = () => {
-		apiCall<DATA>('GET', "https://reqres.in/users/2836").then((response) => {
-			console.log("resposne=>>>", response.data, response.status)
-			setData(response.data)
-		}).catch((error: any) => {
-			Alert.alert(error.message)
+		getUsers<UsersData>().then(({ data }) => {
+			setData(data.data)
+		}).catch((err) => {
+			Alert.alert(err)
 		})
 	}
 
