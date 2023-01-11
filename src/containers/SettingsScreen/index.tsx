@@ -4,8 +4,9 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import WebView from "react-native-webview";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 
-type Props = NativeStackScreenProps<any> & DrawerScreenProps<any>
+type Props = NativeStackScreenProps<any> & DrawerScreenProps<any> & BottomTabScreenProps<any>
 
 const SettingsScreen: React.FC<Props> = ({ navigation }) => {
 
