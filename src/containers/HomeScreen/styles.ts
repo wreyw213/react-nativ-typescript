@@ -9,29 +9,26 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
-    cellView: {
-        height: cellHeight,
-    },
     cell: {
-        // width: cellWidth - 20,
-        // height: cellHeight - 20,
-        flex: 1,
-        backgroundColor: '#eee',
-        borderRadius: 20,
-        overflow: 'hidden',
-        margin: 10,
+        width: cellWidth,
+        backgroundColor: '#000000',
 
     },
-    overlay: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0,
-        backgroundColor: 'rgba(0,0,0,0.4)',
-        padding: 40,
+    touchCover: {
+        backgroundColor: '#e3ad7c',
+        padding: 10,
+        borderRadius: 10
     },
-    full: {
+    viewTop: {
+        flexDirection: 'row',
+        padding: 40,
+        justifyContent: 'space-between',
+        position: 'absolute',
+        right: 0,
+        left: 0,
+        zIndex: 999
+    },
+    video: {
         position: 'absolute',
         top: 0,
         right: 0,

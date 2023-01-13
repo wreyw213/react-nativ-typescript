@@ -1,26 +1,28 @@
 import React from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import styles from "./styles";
-import Video from 'react-native-video'
-// type obj = {
-//     id: number,
-//     title: string
-// }
+import { LoadError, OnBufferData, OnLoadData } from 'react-native-video'
+import VideoPlayer from "../../library/components/VideoPlayer";
 
+type resizeMode = "stretch" | "contain" | "cover" | "none" | undefined;
 type Props = {
     index: string,
     thumb: string,
     sources: string,
     title?: string,
-    scrollToTop?: () => void
+    scrollToTop?: () => void,
+    heightOfView: number,
+    handleChangeResizeMode: () => void,
+    resizeMode: resizeMode
 }
 
 class FlatItem extends React.PureComponent<Props> {
-    video: Video | null | undefined;
+    video: any;
 
     componentWillUnmount() {
         if (this.video) {
-            // this.video.unloadAsync();
+            //@ts-ignore-next-line
+            // this.video.setNativeProps({ paused: true })
         }
     }
 
@@ -29,8 +31,7 @@ class FlatItem extends React.PureComponent<Props> {
         // if (status.isPlaying) {
         // return;
         // }
-        // return this.video?.setState({ pause: false })
-
+        console.log("playing=============", this.video)
         //@ts-ignore-next-line
         return this.video?.setNativeProps({ paused: false, seek: { time: 0 } })
     }
@@ -44,33 +45,39 @@ class FlatItem extends React.PureComponent<Props> {
     }
 
     render() {
-        const { index, thumb, sources, title, scrollToTop } = this.props;
+        const { index, thumb, sources, title, scrollToTop, resizeMode, heightOfView, handleChangeResizeMode } = this.props;
         return (
-            <View style={[styles.cellView]}>
-                <View style={[styles.cell,]}>
-                    {/* <Image
+            <View style={[styles.cell, { height: heightOfView - 10, marginBottom: 10 }]}>
+
+                <View style={[styles.viewTop]}>
+                    <TouchableOpacity onPress={scrollToTop}>
+                        <Text style={styles.overlayText}>Item no. {index}</Text>
+                        <Text style={styles.overlayText}>{title}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.touchCover} onPress={handleChangeResizeMode}>
+                        <Text style={styles.overlayText}>Cover/Contain</Text>
+                    </TouchableOpacity>
+                </View>
+
+                {/* <Image
                     source={{
                         uri: thumb,
                         cache: 'force-cache',
                     }}
                     style={[styles.full, styles.poster]}
                 /> */}
-                    <Video
-                        ref={(ref) => this.video = ref}
-                        source={{ uri: sources }}
-                        paused={true}
-                        resizeMode="cover"
-                        style={styles.full}
-                        repeat={true}
-                    />
-                    <TouchableOpacity style={styles.overlay} onPress={scrollToTop}>
-                        <Text style={styles.overlayText}>Item no. {index}</Text>
-                        <Text style={styles.overlayText}>{title}</Text>
-                    </TouchableOpacity>
-                </View>
+                <VideoPlayer
+                    ref={(ref) => this.video = ref}
+                    source={{ uri: sources }}
+                    paused={true}
+                    resizeMode={resizeMode}
+                    style={styles.video}
+                    repeat={true}
+                />
             </View>
         );
     }
 }
+
 
 export default FlatItem
