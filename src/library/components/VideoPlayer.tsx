@@ -1,23 +1,33 @@
 import React from "react";
-import { View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Video, { LoadError, OnBufferData, OnLoadData, VideoProperties } from 'react-native-video'
 
 type State = {
     loading: boolean,
     error: boolean,
-    errorMessage: string
+    errorMessage: string,
+    key: string
 }
-type Props = VideoProperties & { forwardedRef: any }
+type Props = VideoProperties & { forwardedRef: any, index: string }
 
 class VideoPlayer extends React.Component<Props, State> {
+    unsubscribe: any;
 
     constructor(Props: Props) {
         super(Props)
         this.state = {
             loading: false,
             error: false,
-            errorMessage: ""
+            errorMessage: "",
+            key: this.props.index
         }
+        this.refresh = this.refresh.bind(this)
+    }
+
+    refresh() {
+        this.setState({
+            key: (parseInt(this.state.key) * 2).toString()
+        })
     }
 
     componentWillUnmount() {
@@ -26,18 +36,16 @@ class VideoPlayer extends React.Component<Props, State> {
             error: false,
             errorMessage: ""
         })
+        if (this.unsubscribe) this.unsubscribe()
     }
 
 
 
     onBuffer = (data: OnBufferData) => {
-        console.log("buffer index", data.isBuffering)
         this.setState({ loading: data.isBuffering })
-
     }
 
     onError = (error: LoadError) => {
-        console.log("error", error.error.errorString)
         this.setState({
             loading: false,
             error: true,
@@ -46,7 +54,6 @@ class VideoPlayer extends React.Component<Props, State> {
     }
 
     onLoadStart = () => {
-        console.log("load start")
         this.setState({
             loading: true,
             error: false
@@ -55,23 +62,35 @@ class VideoPlayer extends React.Component<Props, State> {
 
 
     onLoadComplete = (event: OnLoadData) => {
-        console.log("onLoadComplete=>>>>>>>>>");
         this.setState({ loading: false, error: false })
     };
 
 
     render() {
+        const { loading, error, errorMessage, key } = this.state
+
         return (
             <View style={{ flex: 1 }}>
+                {loading && <View style={styles.loadingContainer}>
+                    <ActivityIndicator size={'large'} color={'white'} />
+                </View>}
 
+                {error && <View style={styles.loadingContainer}>
+                    <Text style={styles.textError}>
+                        {errorMessage ? errorMessage : "Please check your internet connection"}
+                    </Text>
+                    <TouchableOpacity style={styles.touchRefresh} onPress={this.refresh}>
+                        <Text style={styles.textRefresh}>Refresh</Text>
+                    </TouchableOpacity>
+                </View>}
 
                 <Video
                     {...this.props}
+                    key={key}
                     ref={this.props.forwardedRef}
                     onBuffer={this.onBuffer}
                     onError={this.onError}
                     onLoadStart={this.onLoadStart}
-
                     onLoad={this.onLoadComplete}
                 />
 
@@ -80,9 +99,42 @@ class VideoPlayer extends React.Component<Props, State> {
     }
 }
 
-const VideoPlayerForwardingRef = React.forwardRef<any, VideoProperties>((props, ref) => (
+const VideoPlayerForwardingRef = React.forwardRef<any, VideoProperties & { index: string }>((props, ref) => (
     <VideoPlayer {...props} forwardedRef={ref} />
 ));
 
 
 export default VideoPlayerForwardingRef
+
+const styles = StyleSheet.create({
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        zIndex: 999,
+        top: 100,
+        left: 0,
+        right: 0,
+        bottom: 100,
+    },
+    textError: {
+        color: 'red',
+        fontSize: 18,
+        textAlign: 'center',
+        letterSpacing: 7,
+        lineHeight: 30,
+        marginHorizontal: 20
+    },
+    touchRefresh: {
+        backgroundColor: 'white',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 10,
+        margin: 10
+    },
+    textRefresh: {
+        fontSize: 14,
+        color: 'green'
+    }
+})

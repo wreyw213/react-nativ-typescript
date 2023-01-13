@@ -31,7 +31,7 @@ class FlatItem extends React.PureComponent<Props> {
         // if (status.isPlaying) {
         // return;
         // }
-        console.log("playing=============", this.video)
+        console.log("playing=============")
         //@ts-ignore-next-line
         return this.video?.setNativeProps({ paused: false, seek: { time: 0 } })
     }
@@ -45,7 +45,7 @@ class FlatItem extends React.PureComponent<Props> {
     }
 
     render() {
-        const { index, thumb, sources, title, scrollToTop, resizeMode, heightOfView, handleChangeResizeMode } = this.props;
+        const { index, sources, title, scrollToTop, resizeMode, heightOfView, handleChangeResizeMode } = this.props;
         return (
             <View style={[styles.cell, { height: heightOfView - 10, marginBottom: 10 }]}>
 
@@ -67,6 +67,7 @@ class FlatItem extends React.PureComponent<Props> {
                     style={[styles.full, styles.poster]}
                 /> */}
                 <VideoPlayer
+                    index={index}
                     ref={(ref) => this.video = ref}
                     source={{ uri: sources }}
                     paused={true}
