@@ -1,13 +1,15 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { DrawerScreenProps } from "@react-navigation/drawer";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { FlatList, LayoutChangeEvent, View } from "react-native";
+import { AppState, AppStateStatus, FlatList, LayoutChangeEvent, View } from "react-native";
 import FlatItem from "./FlatItem";
 import data from './data.json'
 import { cellHeight } from "./constans";
 type Props = NativeStackScreenProps<any> & DrawerScreenProps<any>
 
 let cellRefs: any = {}
+let currentIndex = 0;
+
 type resizeMode = "contain" | "cover" | "none" | undefined;
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
 	const flatListRef = useRef<FlatList>(null);
@@ -17,6 +19,50 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 	const handleChangeResizeMode = () => {
 		if (resizeMode == 'contain') setResizeMode('cover')
 		else setResizeMode('contain')
+	}
+
+	useEffect(() => {
+		const appStateListener = AppState.addEventListener('change', (state: AppStateStatus) => {
+			if (state == 'active') {
+				console.log("Active =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+				playCurrentItem()
+			} else {
+				console.log("InActive =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+				pauseCurrentItem()
+			}
+		})
+
+		const navigationListener = navigation.addListener('blur', () => {
+			console.log("Blur =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+			pauseCurrentItem()
+		})
+
+		const navigationFocusListener = navigation.addListener('focus', () => {
+			console.log("focus=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+			playCurrentItem()
+		})
+
+		return () => {
+			appStateListener.remove()
+			navigationListener()
+			navigationFocusListener()
+		}
+	}, [])
+
+	const pauseCurrentItem = () => {
+		const cell = cellRefs[currentIndex];
+		console.log("pauseCurrentIndex", currentIndex)
+		if (cell) {
+			cell.pause();
+		}
+	}
+
+	const playCurrentItem = () => {
+		const cell = cellRefs[currentIndex];
+		console.log("currentIndexcurrentIndex", currentIndex);
+		if (cell) {
+			cell.play();
+		}
 	}
 
 	const _renderItem = ({ item, index }: any) => {
@@ -47,6 +93,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 			if (cell) {
 				if (item.isViewable) {
 					cell.play();
+					currentIndex = item.key
 				} else {
 					cell.pause();
 				}
