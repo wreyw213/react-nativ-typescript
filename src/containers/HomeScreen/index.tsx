@@ -61,7 +61,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 		const cell = cellRefs[currentIndex];
 		console.log("currentIndexcurrentIndex", currentIndex);
 		if (cell) {
-			cell.play();
+			cell.play(false);
 		}
 	}
 
@@ -92,7 +92,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 			const cell = cellRefs[item.key];
 			if (cell) {
 				if (item.isViewable) {
-					cell.play();
+					cell.play(true);
 					currentIndex = item.key
 				} else {
 					cell.pause();

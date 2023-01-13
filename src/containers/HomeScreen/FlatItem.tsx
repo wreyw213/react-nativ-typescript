@@ -26,14 +26,15 @@ class FlatItem extends React.PureComponent<Props> {
         }
     }
 
-    async play() {
+    async play(seek: boolean) {
         // const status = await this.video.getStatusAsync();
         // if (status.isPlaying) {
         // return;
         // }
         console.log("playing=============")
         //@ts-ignore-next-line
-        return this.video?.setNativeProps({ paused: false, seek: { time: 0 } })
+        if (seek) this.video?.setNativeProps({ paused: false, seek: { time: 0 } })
+        else this.video?.setNativeProps({ paused: false })
     }
 
     pause() {
