@@ -6,9 +6,9 @@ type State = {
     loading: boolean,
     error: boolean,
     errorMessage: string,
-    key: string
+    key: number
 }
-type Props = VideoProperties & { forwardedRef: any, index: string }
+type Props = VideoProperties & { forwardedRef: any, index: number }
 
 class VideoPlayer extends React.Component<Props, State> {
     unsubscribe: any;
@@ -26,7 +26,7 @@ class VideoPlayer extends React.Component<Props, State> {
 
     refresh() {
         this.setState({
-            key: (parseInt(this.state.key) * 2).toString()
+            key: (this.state.key) * 2
         })
     }
 
@@ -42,6 +42,8 @@ class VideoPlayer extends React.Component<Props, State> {
 
 
     onBuffer = (data: OnBufferData) => {
+        console.log("data", data);
+
         this.setState({ loading: data.isBuffering })
     }
 
@@ -99,7 +101,7 @@ class VideoPlayer extends React.Component<Props, State> {
     }
 }
 
-const VideoPlayerForwardingRef = React.forwardRef<any, VideoProperties & { index: string }>((props, ref) => (
+const VideoPlayerForwardingRef = React.forwardRef<any, VideoProperties & { index: number }>((props, ref) => (
     <VideoPlayer {...props} forwardedRef={ref} />
 ));
 

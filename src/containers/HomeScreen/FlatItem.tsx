@@ -1,19 +1,21 @@
 import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import styles from "./styles";
-import { LoadError, OnBufferData, OnLoadData } from 'react-native-video'
 import VideoPlayer from "../../library/components/VideoPlayer";
+import ProgressiveImage from "./ProgressiveImage";
 
 type resizeMode = "stretch" | "contain" | "cover" | "none" | undefined;
 type Props = {
-    index: string,
+    index: number,
     thumb: string,
     sources: string,
+    media_small: string,
     title?: string,
     scrollToTop?: () => void,
     heightOfView: number,
     handleChangeResizeMode: () => void,
-    resizeMode: resizeMode
+    resizeMode: resizeMode,
+    media_type: "image" | "video"
 }
 
 class FlatItem extends React.PureComponent<Props> {
@@ -46,7 +48,16 @@ class FlatItem extends React.PureComponent<Props> {
     }
 
     render() {
-        const { index, sources, title, scrollToTop, resizeMode, heightOfView, handleChangeResizeMode } = this.props;
+        const { index, media_type, sources, media_small, title, scrollToTop, resizeMode, heightOfView, handleChangeResizeMode } = this.props;
+        let src = sources
+        let thumb = media_small
+        if (media_type == 'image') {
+            const id = sources.indexOf('jpeg')
+            src = sources.substring(0, id + 4)
+
+            const idx = media_small.indexOf('jpeg')
+            thumb = media_small.substring(0, idx + 4)
+        }
         return (
             <View style={[styles.cell, { height: heightOfView - 10, marginBottom: 10 }]}>
 
@@ -67,15 +78,24 @@ class FlatItem extends React.PureComponent<Props> {
                     }}
                     style={[styles.full, styles.poster]}
                 /> */}
-                <VideoPlayer
-                    index={index}
-                    ref={(ref) => this.video = ref}
-                    source={{ uri: sources }}
-                    paused={true}
-                    resizeMode={resizeMode}
-                    style={styles.video}
-                    repeat={true}
-                />
+                {media_type == 'image' ?
+                    <ProgressiveImage
+                        index={index}
+                        style={styles.video}
+                        source={{ uri: src }}
+                        thumbnailSource={{ uri: thumb }}
+                    />
+                    :
+                    <VideoPlayer
+                        index={index}
+                        ref={(ref) => this.video = ref}
+                        source={{ uri: sources }}
+                        paused={true}
+                        resizeMode={resizeMode}
+                        style={styles.video}
+                        repeat={true}
+                    />
+                }
             </View>
         );
     }

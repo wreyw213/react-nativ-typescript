@@ -3,7 +3,7 @@ import { DrawerScreenProps } from "@react-navigation/drawer";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AppState, AppStateStatus, FlatList, LayoutChangeEvent, View } from "react-native";
 import FlatItem from "./FlatItem";
-import data from './data.json'
+import data from './apidata.json'
 import { cellHeight } from "./constans";
 type Props = NativeStackScreenProps<any> & DrawerScreenProps<any>
 
@@ -71,7 +71,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 				key={index}
 				index={index}
 				ref={(ref) => {
-					cellRefs[item.id] = ref;
+					cellRefs[index] = ref;
 				}}
 				scrollToTop={scrollToTop}
 				heightOfView={heightOfView}
