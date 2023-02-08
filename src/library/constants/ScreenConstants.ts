@@ -16,7 +16,8 @@ const ScreenConstants = {
     //navigations Stacks
     HOME_STACK: 'HomeStack',
     DRAWER_STACK: 'DrawerStack',
-    TOP_TAB_SCREEN: 'TopTabScreen',
+    TOP_TAB_STACK: 'TopTabStack',
+    BOTTOM_STACk: 'BottomStack'
 
 
 }

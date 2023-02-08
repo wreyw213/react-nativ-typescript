@@ -28,7 +28,7 @@ const DrawerStack: React.FC<Props> = ({ navigation }) => {
         drawerType: 'front'
     }}>
         <Drawer.Screen
-            name={ScreenConstants.HOME_STACK}
+            name={ScreenConstants.BOTTOM_STACk}
             // component={BottomTab} 
             children={(Props) => <BottomTab
                 {...Props}

@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import ScreenConstants from "../constants/ScreenConstants";
 
 type Payload = {
     key?: string,
-    name?: string,
+    name: string,
     params?: any
 }
 
@@ -14,7 +15,9 @@ interface initialState {
 const navigationSlice = createSlice({
     name: 'navigation',
     initialState: {
-        data: {},
+        data: {
+            name: ScreenConstants.HOME_SCREEN
+        },
     },
     reducers: {
         updateNavigationState(state: initialState, action: PayloadAction<Payload>) {

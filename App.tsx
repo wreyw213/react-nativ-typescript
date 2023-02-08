@@ -73,7 +73,7 @@ const App = () => {
         <Stack.Navigator screenOptions={{
           headerShown: false
         }}>
-          <Stack.Screen name={ScreenConstants.TOP_TAB_SCREEN} component={TopTabNavigation} />
+          <Stack.Screen name={ScreenConstants.TOP_TAB_STACK} component={TopTabNavigation} />
           <Stack.Screen options={{ title: 'Details' }} name={ScreenConstants.DETAILS_SCREEN} component={DetailsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
