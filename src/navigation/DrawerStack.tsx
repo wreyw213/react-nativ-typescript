@@ -22,7 +22,7 @@ type Props = MaterialTopTabScreenProps<any>
 const DrawerStack: React.FC<Props> = ({ navigation }) => {
     const Drawer = createDrawerNavigator();
 
-    return <Drawer.Navigator initialRouteName="Home" screenOptions={{
+    return <Drawer.Navigator screenOptions={{
         headerTitle: '',
         headerShown: false,
         drawerType: 'front'
@@ -35,8 +35,8 @@ const DrawerStack: React.FC<Props> = ({ navigation }) => {
                 topTabNavigation={navigation}
             />}
         />
-        <Drawer.Screen name="HomeSCREEN" component={HomeScreen} />
-        <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+        {/* <Drawer.Screen name="HomeSCREEN" component={HomeScreen} /> */}
+        <Drawer.Screen name={ScreenConstants.NOTIFICATION_SCREEN} component={NotificationsScreen} />
     </Drawer.Navigator>
 }
 

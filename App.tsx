@@ -11,13 +11,16 @@
 import React from 'react';
 import { SafeAreaView, StatusBar, Text, useColorScheme, View } from 'react-native';
 
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DrawerStack from './src/navigation/DrawerStack';
 import analytics from '@react-native-firebase/analytics';
 import TopTabNavigation from './src/navigation/TopTabNavigation';
 import { Directions, Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { useDispatch } from 'react-redux';
+import { updateNavigationState } from './src/library/redux/navigationReducer';
+import ScreenConstants from './src/library/constants/ScreenConstants';
 
 
 
@@ -32,9 +35,12 @@ function DetailsScreen() {
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const dispatch = useDispatch()
+
   const Stack = createNativeStackNavigator();
-  const routeNameRef = React.useRef();
-  const navigationRef = React.useRef();
+  const routeNameRef = React.useRef(null);
+  const navigationRef = React.useRef(null);
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: isDarkMode ? 'black' : 'white' }}>
@@ -44,11 +50,17 @@ const App = () => {
       />
       <NavigationContainer ref={navigationRef}
         onReady={() => {
+          //@ts-ignore
           routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
         }}
         onStateChange={async () => {
           const previousRouteName = routeNameRef.current;
+          //@ts-ignore
           const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
+          console.log("currentRouteNamecurrentRouteName", currentRouteName);
+
+          //@ts-ignore
+          dispatch(updateNavigationState(navigationRef.current?.getCurrentRoute()))
 
           if (previousRouteName !== currentRouteName) {
             await analytics().logScreenView({
@@ -61,8 +73,8 @@ const App = () => {
         <Stack.Navigator screenOptions={{
           headerShown: false
         }}>
-          <Stack.Screen name='TopTabScreen' component={TopTabNavigation} />
-          <Stack.Screen options={{ title: 'Details' }} name="Details" component={DetailsScreen} />
+          <Stack.Screen name={ScreenConstants.TOP_TAB_SCREEN} component={TopTabNavigation} />
+          <Stack.Screen options={{ title: 'Details' }} name={ScreenConstants.DETAILS_SCREEN} component={DetailsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
