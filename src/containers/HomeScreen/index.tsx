@@ -5,6 +5,9 @@ import { AppState, AppStateStatus, FlatList, LayoutChangeEvent, View } from "rea
 import FlatItem from "./FlatItem";
 import data from './apidata.json'
 import { cellHeight } from "./constans";
+import { useNavigationState } from "@react-navigation/native";
+import { useDrawerStatus } from '@react-navigation/drawer';
+
 type Props = NativeStackScreenProps<any> & DrawerScreenProps<any>
 
 let cellRefs: any = {}
@@ -12,6 +15,10 @@ let currentIndex = 0;
 
 type resizeMode = "contain" | "cover" | "none" | undefined;
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
+	const state = useNavigationState(state => state);
+
+	const isDrawerOpen = useDrawerStatus() === 'open';
+
 	const flatListRef = useRef<FlatList>(null);
 	const [heightOfView, setHeight] = useState(cellHeight)
 	const [resizeMode, setResizeMode] = useState<resizeMode>('contain')
@@ -20,8 +27,21 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 		if (resizeMode == 'contain') setResizeMode('cover')
 		else setResizeMode('contain')
 	}
+	console.log("statestate", state.index)
 
 	useEffect(() => {
+		if (isDrawerOpen) {
+			pauseCurrentItem()
+		} else {
+			playCurrentItem()
+		}
+
+	}, [isDrawerOpen])
+
+	useEffect(() => {
+
+
+
 		const appStateListener = AppState.addEventListener('change', (state: AppStateStatus) => {
 			if (state == 'active') {
 				console.log("Active =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")

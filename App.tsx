@@ -16,6 +16,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DrawerStack from './src/navigation/DrawerStack';
 import analytics from '@react-native-firebase/analytics';
+import TopTabNavigation from './src/navigation/TopTabNavigation';
 
 
 
@@ -60,7 +61,7 @@ const App = () => {
         <Stack.Navigator screenOptions={{
           headerShown: false
         }}>
-          <Stack.Screen options={{ title: 'DrawerStack' }} name='DrawerStack' component={DrawerStack} />
+          <Stack.Screen name='TopTabScreen' component={TopTabNavigation} />
           <Stack.Screen options={{ title: 'Details' }} name="Details" component={DetailsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
