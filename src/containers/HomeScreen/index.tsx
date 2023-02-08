@@ -3,7 +3,7 @@ import { DrawerScreenProps } from "@react-navigation/drawer";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AppState, AppStateStatus, FlatList, LayoutChangeEvent, View } from "react-native";
 import FlatItem from "./FlatItem";
-import data from './apidata.json'
+import data from './data.json'
 import { cellHeight } from "./constans";
 import { useNavigationState } from "@react-navigation/native";
 import { useDrawerStatus } from '@react-navigation/drawer';
@@ -13,7 +13,8 @@ type Props = NativeStackScreenProps<any> & DrawerScreenProps<any>
 let cellRefs: any = {}
 let currentIndex = 0;
 
-type resizeMode = "contain" | "cover" | "none" | undefined;
+type resizeMode = "stretch" | "contain" | "cover" | "none" | undefined;
+
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
 	const state = useNavigationState(state => state);
 
@@ -139,7 +140,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 			viewabilityConfig={viewConfigRef.current}
 			initialNumToRender={3}
 			maxToRenderPerBatch={3}
-			windowSize={5}
+			windowSize={2}
 			getItemLayout={(_data, index) => ({
 				length: heightOfView,
 				offset: heightOfView * index,

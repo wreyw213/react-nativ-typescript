@@ -1,12 +1,16 @@
 import React from "react";
-import { Animated, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Animated, StyleSheet, View } from "react-native";
+import FastImage, { ResizeMode } from "react-native-fast-image";
 
+type resizeMode = "stretch" | "contain" | "cover" | "none" | undefined
 type Props = {
   thumbnailSource: any,
   source: any,
   style: any,
-  index: number
+  index: number,
+  resizeMode: resizeMode
 }
+const AnimatedFastImage = Animated.createAnimatedComponent(FastImage);
 
 class ProgressiveImage extends React.Component<Props> {
   thumbnailAnimated = new Animated.Value(1);
@@ -31,21 +35,24 @@ class ProgressiveImage extends React.Component<Props> {
       source,
       style,
       index,
+      resizeMode,
       ...props
     } = this.props;
-    console.log("thumbnailSource", index, typeof index, index === 1)
+
     return (
       <View style={styles.container}>
-        {(index === 0 || index === 1) ? <Animated.Image
+        {(index === 0 || index === 1) ? <AnimatedFastImage
           // {...props}
+          resizeMode={(resizeMode == undefined || resizeMode == 'none') ? 'cover' : resizeMode}
           source={thumbnailSource}
           style={style}
-          // onLoad={this.handleThumbnailLoad}
-          onError={(err) => console.log("errror", err)}
-          blurRadius={1}
+          onLoad={this.handleThumbnailLoad}
+          onError={() => console.log("errror")}
+        // blurRadius={1}
         /> : null}
-        <Animated.Image
+        <AnimatedFastImage
           {...props}
+          resizeMode={(resizeMode == undefined || resizeMode == 'none') ? 'cover' : resizeMode}
           source={source}
           style={[styles.imageOverlay, { opacity: this.imageAnimated }, style]}
           onLoad={this.onImageLoad}

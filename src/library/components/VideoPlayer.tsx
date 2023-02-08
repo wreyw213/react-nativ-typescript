@@ -1,6 +1,7 @@
 import React from "react";
 import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Video, { LoadError, OnBufferData, OnLoadData, VideoProperties } from 'react-native-video'
+import convertToProxyURL from 'react-native-video-cache';
 
 type State = {
     loading: boolean,
@@ -8,7 +9,13 @@ type State = {
     errorMessage: string,
     key: number
 }
-type Props = VideoProperties & { forwardedRef: any, index: number }
+
+type VideoPropsTypes = {
+    forwardedRef: any,
+    index: number,
+    source: string
+}
+type Props = VideoProperties & VideoPropsTypes
 
 class VideoPlayer extends React.Component<Props, State> {
     unsubscribe: any;
@@ -48,6 +55,7 @@ class VideoPlayer extends React.Component<Props, State> {
     }
 
     onError = (error: LoadError) => {
+        console.log("error", error)
         this.setState({
             loading: false,
             error: true,
@@ -70,6 +78,8 @@ class VideoPlayer extends React.Component<Props, State> {
 
     render() {
         const { loading, error, errorMessage, key } = this.state
+        const { source } = this.props
+        console.log("source", this.props.index, source, convertToProxyURL(source))
 
         return (
             <View style={{ flex: 1 }}>
@@ -94,14 +104,25 @@ class VideoPlayer extends React.Component<Props, State> {
                     onError={this.onError}
                     onLoadStart={this.onLoadStart}
                     onLoad={this.onLoadComplete}
+                    source={{ uri: convertToProxyURL(source) }}
                 />
 
             </View>
         );
     }
 }
+interface RemoveVideoPropKeys {
+    source: unknown
+}
 
-const VideoPlayerForwardingRef = React.forwardRef<any, VideoProperties & { index: number }>((props, ref) => (
+type VideoProps = Omit<VideoProperties, keyof RemoveVideoPropKeys>
+
+type ExtraVideoProps = {
+    index: number,
+    source: string
+}
+
+const VideoPlayerForwardingRef = React.forwardRef<any, VideoProps & ExtraVideoProps>((props, ref) => (
     <VideoPlayer {...props} forwardedRef={ref} />
 ));
 
