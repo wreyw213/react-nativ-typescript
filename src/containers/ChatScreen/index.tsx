@@ -8,20 +8,14 @@ import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 
 type Props = NativeStackScreenProps<any> & DrawerScreenProps<any> & BottomTabScreenProps<any>
 
-const SettingsScreen: React.FC<Props> = ({ navigation }) => {
+const ChatScreen: React.FC<Props> = ({ navigation }) => {
 
     return <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1, }}>
-            <WebView
-                originWhitelist={['*']}
-                source={{ html: '<h1 style="color:grey;font-size:74px">Settings Screen<h1>' }}
-                style={{ flex: 1 }}
-                scrollEnabled={true}
-                startInLoadingState={true}
-            />
+            <Text>Chat Screen</Text>
         </View>
     </SafeAreaView>
 }
 
-export default SettingsScreen
+export default ChatScreen
 

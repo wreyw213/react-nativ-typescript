@@ -1,85 +1,161 @@
 import React, { useEffect, useRef, useState } from "react";
 import { DrawerScreenProps } from "@react-navigation/drawer";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Alert, FlatList, Text, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch } from "react-redux";
-import { setMessage } from "../../library/redux/reducer";
-import { AppDispatch, } from "../../library/redux/store";
+import { AppState, AppStateStatus, FlatList, LayoutChangeEvent, View } from "react-native";
 import FlatItem from "./FlatItem";
-import { getUsers } from "../../library/apis/userApis";
+import data from './apidata.json'
+import { cellHeight } from "./constans";
+import { useNavigationState } from "@react-navigation/native";
+import { useDrawerStatus } from '@react-navigation/drawer';
 
 type Props = NativeStackScreenProps<any> & DrawerScreenProps<any>
 
-const DATA = [
-	{ id: 1, title: "hello world" },
-	{ id: 2, title: "34 world" },
-	{ id: 3, title: "343 world" },
-	{ id: 4, title: "hell34o world" },
-	{ id: 5, title: "4 world" },
-	{ id: 6, title: "43 34" },
-	{ id: 7, title: "df wodfdrld" },
-	{ id: 8, title: "df df" },
-	{ id: 9, title: "d world" },
-	{ id: 10, title: "hellfddo world" },
-	{ id: 11, title: "heldflo world" },
-	{ id: 12, title: "hello world" },
-	{ id: 13, title: "hello world" },
-	{ id: 14, title: "dfdd world" },
-	{ id: 15, title: "helddlo world" },
-	{ id: 16, title: "d world" },
-	{ id: 17, title: "helfddlo world" },
-	{ id: 18, title: "d df" },
-	{ id: 19, title: "d de" },
-	{ id: 20, title: ",m ,m" },
-	{ id: 21, title: "m, worl,md" },
-]
+let cellRefs: any = {}
+let currentIndex = 0;
 
-type obj = {
-	id: number,
-	title: string
-}
-type UsersData = Array<obj>
-// let LayoutArr = [] as Array<any>
-
+type resizeMode = "contain" | "cover" | "none" | undefined;
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
+	const state = useNavigationState(state => state);
+
+	const isDrawerOpen = useDrawerStatus() === 'open';
+
 	const flatListRef = useRef<FlatList>(null);
-	const dispatch = useDispatch<AppDispatch>()
-	const [data, setData] = useState<Array<obj>>([])
+	const [heightOfView, setHeight] = useState(cellHeight)
+	const [resizeMode, setResizeMode] = useState<resizeMode>('contain')
+
+	const handleChangeResizeMode = () => {
+		if (resizeMode == 'contain') setResizeMode('cover')
+		else setResizeMode('contain')
+	}
+	console.log("statestate", state.index)
 
 	useEffect(() => {
-		setData(DATA.concat({ id: 221, title: new Date().getTime().toString() }))
+		if (isDrawerOpen) {
+			pauseCurrentItem()
+		} else {
+			playCurrentItem()
+		}
 
-		setTimeout(() => {
-			dispatch(setMessage("hello world " + new Date().toLocaleDateString()))
-		}, 2000)
+	}, [isDrawerOpen])
+
+	useEffect(() => {
+
+
+
+		const appStateListener = AppState.addEventListener('change', (state: AppStateStatus) => {
+			if (state == 'active') {
+				console.log("Active =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+				playCurrentItem()
+			} else {
+				console.log("InActive =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+				pauseCurrentItem()
+			}
+		})
+
+		const navigationListener = navigation.addListener('blur', () => {
+			console.log("Blur =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+			pauseCurrentItem()
+		})
+
+		const navigationFocusListener = navigation.addListener('focus', () => {
+			console.log("focus=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+			playCurrentItem()
+		})
+
+		return () => {
+			appStateListener.remove()
+			navigationListener()
+			navigationFocusListener()
+		}
 	}, [])
 
-	const fetchusers = () => {
-		getUsers<UsersData>().then(({ data }) => {
-			setData(data.data)
-		}).catch((err) => {
-			Alert.alert(err)
-		})
+	const pauseCurrentItem = () => {
+		const cell = cellRefs[currentIndex];
+		console.log("pauseCurrentIndex", currentIndex)
+		if (cell) {
+			cell.pause();
+		}
 	}
 
+	const playCurrentItem = () => {
+		const cell = cellRefs[currentIndex];
+		console.log("currentIndexcurrentIndex", currentIndex);
+		if (cell) {
+			cell.play(false);
+		}
+	}
 
-	return <SafeAreaView style={{ flex: 1 }}>
-		<View style={[{ flex: 1, }]}>
-			<TouchableOpacity style={{ marginTop: 10 }} onPress={fetchusers}>
-				<Text style={{ color: 'blue' }}>Fetch Users</Text>
-			</TouchableOpacity>
-			<FlatList
-				ref={flatListRef}
-				data={data}
-				renderItem={({ item, index }) => <FlatItem
-					item={item}
-					index={index}
-				/>}
-				bounces={false}
+	const _renderItem = ({ item, index }: any) => {
+		return (
+			<FlatItem
+				key={index}
+				index={index}
+				ref={(ref) => {
+					cellRefs[index] = ref;
+				}}
+				scrollToTop={scrollToTop}
+				heightOfView={heightOfView}
+				resizeMode={resizeMode}
+				handleChangeResizeMode={handleChangeResizeMode}
+				{...item}
 			/>
-		</View>
-	</SafeAreaView>
+		);
+	};
+
+	const scrollToTop = () => {
+		flatListRef.current?.scrollToIndex({ index: 0, animated: false })
+	}
+
+	const onViewableItemsChanged = (props: any) => {
+		const changed = props.changed;
+		changed.forEach((item: any) => {
+			const cell = cellRefs[item.key];
+			if (cell) {
+				if (item.isViewable) {
+					cell.play(true);
+					currentIndex = item.key
+				} else {
+					cell.pause();
+				}
+			}
+		});
+	};
+	const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 70 });
+	const onViewRef = useRef(onViewableItemsChanged);
+
+	// const viewabilityConfigCallbackPairs = useRef([{ viewabilityConfig, onViewableItemsChanged }])
+
+	return <View style={[{ flex: 1 }]}>
+
+		<FlatList
+			ref={flatListRef}
+			style={{ flex: 1 }}
+			contentContainerStyle={{ flexGrow: 1 }}
+			data={data}
+			renderItem={_renderItem}
+			keyExtractor={(item, index) => index.toString()}
+			// viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+			onViewableItemsChanged={onViewRef.current}
+			viewabilityConfig={viewConfigRef.current}
+			initialNumToRender={3}
+			maxToRenderPerBatch={3}
+			windowSize={5}
+			getItemLayout={(_data, index) => ({
+				length: heightOfView,
+				offset: heightOfView * index,
+				index,
+			})}
+			onLayout={(e: LayoutChangeEvent) => {
+				const { height } = e.nativeEvent.layout
+				setHeight(height)
+			}}
+			snapToInterval={heightOfView}
+			snapToAlignment="start"
+			decelerationRate={"fast"}
+			removeClippedSubviews={true}
+			pagingEnabled={true}
+		/>
+	</View>
 }
 
 export default HomeScreen;

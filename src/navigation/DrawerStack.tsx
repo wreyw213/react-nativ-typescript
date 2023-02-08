@@ -21,7 +21,9 @@ const DrawerStack = () => {
 
 
     return <Drawer.Navigator initialRouteName="Home" screenOptions={{
-        headerTitle: ''
+        headerTitle: '',
+        headerShown: false,
+        drawerType: 'front'
     }}>
         <Drawer.Screen name={ScreenConstants.HOME_STACK} component={BottomTab} />
         <Drawer.Screen name="HomeSCREEN" component={HomeScreen} />

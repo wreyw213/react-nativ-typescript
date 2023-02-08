@@ -22,6 +22,18 @@ const styles = StyleSheet.create({
     },
     buttonText: {
 
+    },
+    inputSearch: {
+        padding: 15,
+        borderWidth: 2,
+        borderColor: '#fefefe',
+        position: 'absolute',
+        top: 20,
+        backgroundColor: '#dedede',
+        left: 20,
+        right: 20,
+        zIndex: 999,
+        borderRadius: 15
     }
 })
 export default styles

@@ -15,6 +15,8 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DrawerStack from './src/navigation/DrawerStack';
+import analytics from '@react-native-firebase/analytics';
+import TopTabNavigation from './src/navigation/TopTabNavigation';
 
 
 
@@ -30,6 +32,8 @@ function DetailsScreen() {
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const Stack = createNativeStackNavigator();
+  const routeNameRef = React.useRef();
+  const navigationRef = React.useRef();
 
   return (
 
@@ -38,11 +42,26 @@ const App = () => {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={'black'}
       />
-      <NavigationContainer >
+      <NavigationContainer ref={navigationRef}
+        onReady={() => {
+          routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
+        }}
+        onStateChange={async () => {
+          const previousRouteName = routeNameRef.current;
+          const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
+
+          if (previousRouteName !== currentRouteName) {
+            await analytics().logScreenView({
+              screen_name: currentRouteName,
+              screen_class: currentRouteName,
+            });
+          }
+          routeNameRef.current = currentRouteName;
+        }}>
         <Stack.Navigator screenOptions={{
           headerShown: false
         }}>
-          <Stack.Screen options={{ title: 'DrawerStack' }} name='DrawerStack' component={DrawerStack} />
+          <Stack.Screen name='TopTabScreen' component={TopTabNavigation} />
           <Stack.Screen options={{ title: 'Details' }} name="Details" component={DetailsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
