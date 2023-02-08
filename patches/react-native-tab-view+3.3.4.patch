@@ -1,0 +1,76 @@
+diff --git a/node_modules/react-native-tab-view/lib/module/PanResponderAdapter.js b/node_modules/react-native-tab-view/lib/module/PanResponderAdapter.js
+index 2f94d6b..be9b19e 100644
+--- a/node_modules/react-native-tab-view/lib/module/PanResponderAdapter.js
++++ b/node_modules/react-native-tab-view/lib/module/PanResponderAdapter.js
+@@ -104,10 +104,10 @@ export default function PanResponderAdapter(_ref) {
+   const respondToGesture = (_, gestureState) => {
+     const diffX = I18nManager.isRTL ? -gestureState.dx : gestureState.dx;
+     if (
+-    // swiping left
+-    diffX > 0 && index <= 0 ||
+-    // swiping right
+-    diffX < 0 && index >= routes.length - 1) {
++      // swiping left
++      diffX > 0 && index <= 0 ||
++      // swiping right
++      diffX < 0 && index >= routes.length - 1) {
+       return;
+     }
+     if (layout.width) {
+@@ -121,6 +121,7 @@ export default function PanResponderAdapter(_ref) {
+     panX.setValue(diffX);
+   };
+   const finishGesture = (_, gestureState) => {
++
+     panX.flattenOffset();
+     onSwipeEnd === null || onSwipeEnd === void 0 ? void 0 : onSwipeEnd();
+     const currentIndex = typeof pendingIndexRef.current === 'number' ? pendingIndexRef.current : currentIndexRef.current;
+diff --git a/node_modules/react-native-tab-view/src/PagerViewAdapter.tsx b/node_modules/react-native-tab-view/src/PagerViewAdapter.tsx
+index 3c7d102..7cd9ea5 100644
+--- a/node_modules/react-native-tab-view/src/PagerViewAdapter.tsx
++++ b/node_modules/react-native-tab-view/src/PagerViewAdapter.tsx
+@@ -115,6 +115,8 @@ export default function PagerViewAdapter<T extends Route>({
+         onSwipeStart?.();
+         return;
+       }
++      case 'settling':
++        onSwipeEnd?.();
+     }
+   };
+ 
+diff --git a/node_modules/react-native-tab-view/src/PanResponderAdapter.tsx b/node_modules/react-native-tab-view/src/PanResponderAdapter.tsx
+index 4a3570c..3308803 100644
+--- a/node_modules/react-native-tab-view/src/PanResponderAdapter.tsx
++++ b/node_modules/react-native-tab-view/src/PanResponderAdapter.tsx
+@@ -157,6 +157,7 @@ export default function PanResponderAdapter<T extends Route>({
+   };
+ 
+   const startGesture = () => {
++
+     onSwipeStart?.();
+ 
+     if (keyboardDismissMode === 'on-drag') {
+@@ -299,9 +300,9 @@ export default function PanResponderAdapter<T extends Route>({
+           styles.sheet,
+           layout.width
+             ? {
+-                width: routes.length * layout.width,
+-                transform: [{ translateX }],
+-              }
++              width: routes.length * layout.width,
++              transform: [{ translateX }],
++            }
+             : null,
+           style,
+         ]}
+@@ -318,8 +319,8 @@ export default function PanResponderAdapter<T extends Route>({
+                 layout.width
+                   ? { width: layout.width }
+                   : focused
+-                  ? StyleSheet.absoluteFill
+-                  : null
++                    ? StyleSheet.absoluteFill
++                    : null
+               }
+             >
+               {focused || layout.width ? child : null}

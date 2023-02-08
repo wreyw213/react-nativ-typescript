@@ -17,6 +17,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DrawerStack from './src/navigation/DrawerStack';
 import analytics from '@react-native-firebase/analytics';
 import TopTabNavigation from './src/navigation/TopTabNavigation';
+import { Directions, Gesture, GestureDetector } from 'react-native-gesture-handler';
 
 
 
@@ -36,7 +37,6 @@ const App = () => {
   const navigationRef = React.useRef();
 
   return (
-
     <SafeAreaView style={{ flex: 1, backgroundColor: isDarkMode ? 'black' : 'white' }}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}

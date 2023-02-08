@@ -58,7 +58,6 @@ const UserInfoScreen: React.FC<Props> = ({ navigation }) => {
                 }),
             ]);
             // const p = data.app.debug() //crash Here
-            console.log("p=>>>>>>>>>", p)
         } catch (err: any) {
             console.log("error", err);
 

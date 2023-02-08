@@ -5,18 +5,21 @@ import { AppState, AppStateStatus, FlatList, LayoutChangeEvent, View } from "rea
 import FlatItem from "./FlatItem";
 import data from './data.json'
 import { cellHeight } from "./constans";
-import { useNavigationState } from "@react-navigation/native";
+import { useIsFocused, useNavigationState } from "@react-navigation/native";
 import { useDrawerStatus } from '@react-navigation/drawer';
+import { Directions, Gesture, GestureDetector } from "react-native-gesture-handler";
+import { MaterialTopTabNavigationProp } from "@react-navigation/material-top-tabs";
 
-type Props = NativeStackScreenProps<any> & DrawerScreenProps<any>
+type Props = NativeStackScreenProps<any> & DrawerScreenProps<any> & { topTabNavigation?: MaterialTopTabNavigationProp<any> }
 
 let cellRefs: any = {}
 let currentIndex = 0;
 
 type resizeMode = "stretch" | "contain" | "cover" | "none" | undefined;
 
-const HomeScreen: React.FC<Props> = ({ navigation }) => {
+const HomeScreen: React.FC<Props> = ({ navigation, topTabNavigation }) => {
 	const state = useNavigationState(state => state);
+	const isFoucused = useIsFocused()
 
 	const isDrawerOpen = useDrawerStatus() === 'open';
 
@@ -40,7 +43,8 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 	}, [isDrawerOpen])
 
 	useEffect(() => {
-
+		let listerner: () => void;
+		let listernerSwipeEnd: () => void;
 
 
 		const appStateListener = AppState.addEventListener('change', (state: AppStateStatus) => {
@@ -63,9 +67,24 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 			playCurrentItem()
 		})
 
+		if (topTabNavigation) {
+
+			listerner = topTabNavigation.addListener('swipeStart', () => {
+				pauseCurrentItem()
+				console.log("HEY I SHOULD WORK swipeStart............")
+			})
+
+			listernerSwipeEnd = topTabNavigation.addListener('swipeEnd', () => {
+				isFoucused && playCurrentItem()
+				console.log("HEY I SHOULD WORK swipeEnd............")
+			})
+		}
+
 		return () => {
 			appStateListener.remove()
 			navigationListener()
+			if (listerner) listerner()
+			if (listernerSwipeEnd) listernerSwipeEnd()
 			navigationFocusListener()
 		}
 	}, [])
@@ -77,7 +96,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 			cell.pause();
 		}
 	}
-
+	console.log("isFoucused", isFoucused)
 	const playCurrentItem = () => {
 		const cell = cellRefs[currentIndex];
 		console.log("currentIndexcurrentIndex", currentIndex);
@@ -126,7 +145,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
 	// const viewabilityConfigCallbackPairs = useRef([{ viewabilityConfig, onViewableItemsChanged }])
 
-	return <View style={[{ flex: 1 }]}>
+	return <View style={{ flex: 1, backgroundColor: '#fefede' }}>
 
 		<FlatList
 			ref={flatListRef}
