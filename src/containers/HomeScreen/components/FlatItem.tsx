@@ -1,11 +1,9 @@
 import React from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
-import styles from "./styles";
-import VideoPlayer from "../../library/components/VideoPlayer";
+import { Text, TouchableOpacity, View } from "react-native";
+import styles from "../styles";
+import VideoPlayer from "../../../library/components/VideoPlayer";
 import ProgressiveImage from "./ProgressiveImage";
-import Video, { LoadError } from "react-native-video";
 
-type resizeMode = "stretch" | "contain" | "cover" | "none" | undefined;
 type Props = {
 	index: number,
 	thumb: string,
@@ -14,8 +12,6 @@ type Props = {
 	title?: string,
 	scrollToTop?: () => void,
 	heightOfView: number,
-	handleChangeResizeMode: () => void,
-	resizeMode: resizeMode,
 	media_type: "image" | "video"
 }
 
@@ -49,16 +45,8 @@ class FlatItem extends React.PureComponent<Props> {
 	}
 
 	render() {
-		const { index, media_type, sources, media_small, title, scrollToTop, resizeMode, heightOfView, handleChangeResizeMode } = this.props;
-		let src = sources
-		let thumb = media_small
-		if (media_type == 'image') {
-			const id = sources.indexOf('jpeg')
-			src = sources.substring(0, id + 4)
+		const { index, media_type, sources, media_small, title, scrollToTop, heightOfView } = this.props;
 
-			const idx = media_small.indexOf('jpeg')
-			thumb = media_small.substring(0, idx + 4)
-		}
 		return (
 			<View style={[styles.cell, { height: heightOfView - 10, marginBottom: 10 }]}>
 
@@ -67,18 +55,14 @@ class FlatItem extends React.PureComponent<Props> {
 						<Text style={styles.overlayText}>Item no. {index} {media_type}</Text>
 						<Text style={styles.overlayText}>{title}</Text>
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.touchCover} onPress={handleChangeResizeMode}>
-						<Text style={styles.overlayText}>Cover/Contain</Text>
-					</TouchableOpacity>
 				</View>
 
 				{media_type == 'image' ?
 					<ProgressiveImage
 						index={index}
 						style={styles.video}
-						source={{ uri: src }}
-						resizeMode={resizeMode}
-						thumbnailSource={{ uri: thumb }}
+						source={{ uri: sources }}
+						thumbnailSource={{ uri: media_small }}
 					/>
 					:
 					<VideoPlayer
@@ -86,7 +70,6 @@ class FlatItem extends React.PureComponent<Props> {
 						ref={(ref) => this.video = ref}
 						source={sources}
 						paused={true}
-						resizeMode={resizeMode}
 						style={styles.video}
 						repeat={true}
 					/>

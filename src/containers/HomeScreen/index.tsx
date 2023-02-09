@@ -2,12 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { DrawerScreenProps } from "@react-navigation/drawer";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AppState, AppStateStatus, FlatList, LayoutChangeEvent, View } from "react-native";
-import FlatItem from "./FlatItem";
-import data from './data.json'
-import { cellHeight } from "./constans";
+import FlatItem from "./components/FlatItem";
+import data from './utils/apidata.json'
+import { cellHeight } from "./utils/constants";
 import { useIsFocused, useNavigationState } from "@react-navigation/native";
 import { useDrawerStatus } from '@react-navigation/drawer';
-import { Directions, Gesture, GestureDetector } from "react-native-gesture-handler";
 import { MaterialTopTabNavigationProp } from "@react-navigation/material-top-tabs";
 
 type Props = NativeStackScreenProps<any> & DrawerScreenProps<any> & { topTabNavigation?: MaterialTopTabNavigationProp<any> }
@@ -15,23 +14,12 @@ type Props = NativeStackScreenProps<any> & DrawerScreenProps<any> & { topTabNavi
 let cellRefs: any = {}
 let currentIndex = 0;
 
-type resizeMode = "stretch" | "contain" | "cover" | "none" | undefined;
-
 const HomeScreen: React.FC<Props> = ({ navigation, topTabNavigation }) => {
-	const state = useNavigationState(state => state);
 	const isFoucused = useIsFocused()
-
 	const isDrawerOpen = useDrawerStatus() === 'open';
 
 	const flatListRef = useRef<FlatList>(null);
 	const [heightOfView, setHeight] = useState(cellHeight)
-	const [resizeMode, setResizeMode] = useState<resizeMode>('contain')
-
-	const handleChangeResizeMode = () => {
-		if (resizeMode == 'contain') setResizeMode('cover')
-		else setResizeMode('contain')
-	}
-	console.log("statestate", state.index)
 
 	useEffect(() => {
 		if (isDrawerOpen) {
@@ -115,8 +103,6 @@ const HomeScreen: React.FC<Props> = ({ navigation, topTabNavigation }) => {
 				}}
 				scrollToTop={scrollToTop}
 				heightOfView={heightOfView}
-				resizeMode={resizeMode}
-				handleChangeResizeMode={handleChangeResizeMode}
 				{...item}
 			/>
 		);

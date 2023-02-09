@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet } from "react-native";
-import { cellHeight } from "./constans";
+import { cellHeight } from "./utils/constants";
 
 const { width } = Dimensions.get('window');
 
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         left: 0,
+        backgroundColor: '#000'
     },
     poster: {
         resizeMode: 'cover',

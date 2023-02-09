@@ -1,13 +1,17 @@
 import React from "react";
-import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Dimensions, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Video, { LoadError, OnBufferData, OnLoadData, VideoProperties } from 'react-native-video'
 import convertToProxyURL from 'react-native-video-cache';
+
+type resizeMode = "stretch" | "contain" | "cover" | "none" | undefined
+
 
 type State = {
     loading: boolean,
     error: boolean,
     errorMessage: string,
-    key: number
+    key: number,
+    resizeMode: resizeMode
 }
 
 type VideoPropsTypes = {
@@ -17,6 +21,7 @@ type VideoPropsTypes = {
 }
 type Props = VideoProperties & VideoPropsTypes
 
+const { width } = Dimensions.get('window')
 class VideoPlayer extends React.Component<Props, State> {
     unsubscribe: any;
 
@@ -26,7 +31,8 @@ class VideoPlayer extends React.Component<Props, State> {
             loading: false,
             error: false,
             errorMessage: "",
-            key: this.props.index
+            key: this.props.index,
+            resizeMode: "contain"
         }
         this.refresh = this.refresh.bind(this)
     }
@@ -72,6 +78,14 @@ class VideoPlayer extends React.Component<Props, State> {
 
 
     onLoadComplete = (event: OnLoadData) => {
+
+        const { naturalSize } = event
+
+        if (naturalSize.width < width) {
+            this.setState({
+                resizeMode: "cover"
+            })
+        }
         this.setState({ loading: false, error: false })
     };
 
@@ -79,7 +93,6 @@ class VideoPlayer extends React.Component<Props, State> {
     render() {
         const { loading, error, errorMessage, key } = this.state
         const { source } = this.props
-        console.log("source", this.props.index, source, convertToProxyURL(source))
 
         return (
             <View style={{ flex: 1 }}>
@@ -98,6 +111,7 @@ class VideoPlayer extends React.Component<Props, State> {
 
                 <Video
                     {...this.props}
+                    resizeMode={this.state.resizeMode}
                     key={key}
                     ref={this.props.forwardedRef}
                     onBuffer={this.onBuffer}
