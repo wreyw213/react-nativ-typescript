@@ -1,5 +1,6 @@
 export const Colors = {
   RED: 'red',
+  RED_LIGHT: '#FF2741E6',
   FEILD_PLACEHOLDER: '#999999',
   WHITE: 'white',
   BLACK: '#333333',
@@ -57,7 +58,46 @@ export const dark_theme = {
   TXT_SECONDARY: Colors.BLACK,
 }
 
+export const red_theme = {
+  BG_PRIMARY: Colors.RED_LIGHT,
+  BG_SECONDRY: Colors.WHITE,
+  TXT_PRIMARY: Colors.WHITE,
+  TXT_SECONDARY: Colors.RED_LIGHT,
+}
+
+export const green_theme = {
+  BG_PRIMARY: Colors.GREEN,
+  BG_SECONDRY: Colors.WHITE,
+  TXT_PRIMARY: Colors.WHITE,
+  TXT_SECONDARY: Colors.GREEN,
+}
+
 export default {
   dark: dark_theme,
-  light: light_theme
+  light: light_theme,
+  red: red_theme,
+  green: green_theme
+}
+
+export const PredefinedThemes = {
+  dark: {
+    title: 'Dark',
+    color: Colors.BLACK,
+    theme: dark_theme
+  },
+  light: {
+    title: 'Light',
+    color: Colors.WHITE,
+    theme: light_theme
+  },
+  red: {
+    title: 'Red',
+    color: Colors.RED,
+    theme: red_theme
+  },
+  green: {
+    title: 'Green',
+    color: Colors.GREEN,
+    theme: green_theme
+  }
 }

@@ -17,7 +17,8 @@ const ScreenConstants = {
     HOME_STACK: 'HomeStack',
     DRAWER_STACK: 'DrawerStack',
     TOP_TAB_STACK: 'TopTabStack',
-    BOTTOM_STACk: 'BottomStack'
+    BOTTOM_STACk: 'BottomStack',
+    THEME_SCREEN: 'ThemeScreen',
 
 
 }

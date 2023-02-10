@@ -6,6 +6,7 @@ import React, { useEffect } from "react"
 import { Text, View } from "react-native";
 import HomeScreen from "../containers/HomeScreen";
 import SettingsScreen from "../containers/SettingsScreen";
+import ThemeScreen from "../containers/ThemeScreen";
 import CustomDrawer from "../library/components/CustomDrawer";
 import ScreenConstants from "../library/constants/ScreenConstants";
 import BottomTab from "./BottomTabs";

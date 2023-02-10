@@ -1,4 +1,4 @@
-export type DefaultThemes = 'dark' | 'light'
+export type DefaultThemes = 'dark' | 'light' | 'red' | 'green'
 
 export type Theme = {
     type?: string,

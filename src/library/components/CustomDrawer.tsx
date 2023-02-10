@@ -9,6 +9,8 @@ import { updateTheme } from '../redux/themeReducer';
 import useTheme from '../hooks/useTheme';
 import { Theme } from '../types';
 import { AppDispatch } from '../redux/store';
+import Button from './Button';
+import ScreenConstants from '../constants/ScreenConstants';
 
 const CustomDrawer: FC<DrawerContentComponentProps> = ({ navigation }) => {
 
@@ -26,7 +28,12 @@ const CustomDrawer: FC<DrawerContentComponentProps> = ({ navigation }) => {
 		<SafeAreaView style={{ flex: 1, backgroundColor: theme.BG_PRIMARY }} edges={['top', 'right', 'left']}>
 			<DrawerContentScrollView contentContainerStyle={{ paddingTop: 0, flexGrow: 1, borderTopRightRadius: DimensionsValue.VALUE_20 }} showsVerticalScrollIndicator={false} bounces={false}>
 
-				<View style={{ flex: 1 }} />
+				<View style={{ flex: 1 }} >
+					<Button
+						title={'Theme Settings'}
+						onPress={() => navigation.navigate(ScreenConstants.THEME_SCREEN)}
+					/>
+				</View>
 
 				<View style={styles(theme).viewSwitch}>
 					<Switch

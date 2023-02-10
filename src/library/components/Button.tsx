@@ -1,5 +1,8 @@
 import React, { FC } from 'react';
 import { Text, Dimensions, TouchableOpacity, ActivityIndicator, View, Image, Platform, StyleSheet, ImageSourcePropType, StyleProp, ViewStyle, TextStyle, ImageStyle } from 'react-native';
+import useTheme from '../hooks/useTheme';
+import { Theme } from '../types';
+import DimensionsValue from '../utils/DimensionsValue';
 const { width, } = Dimensions.get('window');
 
 type Props = {
@@ -17,15 +20,18 @@ type Props = {
 const Button: React.FC<Props> = ({ title, isLoading, disabled, onPress, leftImage, rightImage,
   containerStyle, textStyle, leftImageStyles, rightImageStyles
 }) => {
+
+  const [theme] = useTheme();
+
   return (
 
-    <TouchableOpacity disabled={isLoading || disabled} style={[styles.touchContainer,
-    disabled && { backgroundColor: '#fefefe' }, containerStyle]} onPress={onPress}>
+    <TouchableOpacity disabled={isLoading || disabled} style={[styles(theme).touchContainer,
+    disabled && { backgroundColor: theme.BG_PRIMARY }, containerStyle]} onPress={onPress}>
       {isLoading ? <ActivityIndicator color={'#FFF'} /> :
-        <View style={styles.rootView}>
-          {leftImage && <Image style={[styles.buttonLeftImage, leftImageStyles]} source={leftImage} />}
-          <Text style={[styles.titleLabel, textStyle,]}>{title}</Text>
-          {rightImage && <Image style={[styles.buttonRightImage, rightImageStyles]} source={rightImage} />}
+        <View style={styles(theme).rootView}>
+          {leftImage && <Image style={[styles(theme).buttonLeftImage, leftImageStyles]} source={leftImage} />}
+          <Text style={[styles(theme).titleLabel, textStyle,]}>{title}</Text>
+          {rightImage && <Image style={[styles(theme).buttonRightImage, rightImageStyles]} source={rightImage} />}
         </View>}
     </TouchableOpacity>
   );
@@ -33,18 +39,19 @@ const Button: React.FC<Props> = ({ title, isLoading, disabled, onPress, leftImag
 
 export default Button
 
-const styles = StyleSheet.create({
+const styles = (theme: Theme) => StyleSheet.create({
   touchContainer: {
     alignSelf: 'center',
     height: width / 8.15,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: width / 37.5,
-    backgroundColor: '#000',
+    backgroundColor: theme.BG_SECONDRY,
+    paddingHorizontal: DimensionsValue.VALUE_10
     // minWidth: width / 4
   },
   titleLabel: {
-    // color: '#FFFFFF',
+    color: theme.TXT_SECONDARY,
     // fontSize: 12,
   },
   rootView: {
