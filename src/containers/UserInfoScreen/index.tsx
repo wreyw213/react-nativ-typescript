@@ -9,11 +9,13 @@ import { LoginData } from "../../library/types/userInfo";
 import { loginApi } from "../../library/apis/userApis";
 import crashlytics from '@react-native-firebase/crashlytics';
 import analytics from '@react-native-firebase/analytics';
+import useTheme from "../../library/hooks/useTheme";
 
 type Props = NativeStackScreenProps<any> & DrawerScreenProps<any>
 
 
 const UserInfoScreen: React.FC<Props> = ({ navigation }) => {
+    const [theme] = useTheme()
 
     const [userData, setUserData] = useState<LoginData>()
     const [data, setData] = useState(null)
@@ -65,7 +67,7 @@ const UserInfoScreen: React.FC<Props> = ({ navigation }) => {
         }
     }
 
-    return <SafeAreaView style={{ flex: 1 }}>
+    return <SafeAreaView style={styles(theme).safeAreaView}>
         <ScrollView style={{ flex: 1, }}>
 
             <Button
@@ -79,10 +81,10 @@ const UserInfoScreen: React.FC<Props> = ({ navigation }) => {
                         credits: 42,
                     })
                 }
-                containerStyle={styles.buttonContainer}
-                textStyle={styles.buttonText}
+                containerStyle={styles(theme).buttonContainer}
+                textStyle={styles(theme).buttonText}
             />
-            <Text style={styles.textUserData}>{JSON.stringify(userData)}</Text>
+            <Text style={styles(theme).textUserData}>{JSON.stringify(userData)}</Text>
 
         </ScrollView>
 

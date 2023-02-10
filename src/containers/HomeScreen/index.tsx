@@ -8,6 +8,7 @@ import { cellHeight } from "./utils/constants";
 import { useIsFocused, useNavigationState } from "@react-navigation/native";
 import { useDrawerStatus } from '@react-navigation/drawer';
 import { MaterialTopTabNavigationProp } from "@react-navigation/material-top-tabs";
+import useTheme from "../../library/hooks/useTheme";
 
 type Props = NativeStackScreenProps<any> & DrawerScreenProps<any> & { topTabNavigation?: MaterialTopTabNavigationProp<any> }
 
@@ -17,6 +18,7 @@ let currentIndex = 0;
 const HomeScreen: React.FC<Props> = ({ navigation, topTabNavigation }) => {
 	const isFoucused = useIsFocused()
 	const isDrawerOpen = useDrawerStatus() === 'open';
+	const [theme] = useTheme()
 
 	const flatListRef = useRef<FlatList>(null);
 	const [heightOfView, setHeight] = useState(cellHeight)
@@ -96,6 +98,7 @@ const HomeScreen: React.FC<Props> = ({ navigation, topTabNavigation }) => {
 	const _renderItem = ({ item, index }: any) => {
 		return (
 			<FlatItem
+				theme={theme}
 				key={index}
 				index={index}
 				ref={(ref) => {
@@ -131,7 +134,7 @@ const HomeScreen: React.FC<Props> = ({ navigation, topTabNavigation }) => {
 
 	// const viewabilityConfigCallbackPairs = useRef([{ viewabilityConfig, onViewableItemsChanged }])
 
-	return <View style={{ flex: 1, backgroundColor: '#fefede' }}>
+	return <View style={{ flex: 1, }}>
 
 		<FlatList
 			ref={flatListRef}

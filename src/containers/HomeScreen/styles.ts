@@ -1,23 +1,20 @@
 import { Dimensions, StyleSheet } from "react-native";
+import ColorConstants from "../../library/constants/ColorConstants";
+import { Theme } from "../../library/types";
 import { cellHeight } from "./utils/constants";
 
 const { width } = Dimensions.get('window');
 
 const cellWidth = width;
-const styles = StyleSheet.create({
+const styles = (theme: Theme) => StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: ColorConstants.BG_PRIMARY[theme],
     },
     cell: {
         width: cellWidth,
-        backgroundColor: '#000000',
+        backgroundColor: ColorConstants.BG_PRIMARY[theme],
 
-    },
-    touchCover: {
-        backgroundColor: '#e3ad7c',
-        padding: 10,
-        borderRadius: 10
     },
     viewTop: {
         flexDirection: 'row',
@@ -34,14 +31,17 @@ const styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         left: 0,
-        backgroundColor: '#000'
+        backgroundColor: ColorConstants.BG_PRIMARY[theme]
     },
     poster: {
         resizeMode: 'cover',
     },
     overlayText: {
-        color: '#fff',
+        color: ColorConstants.TXT_PRIMARY[theme],
     },
+    textDescription: {
+        color: ColorConstants.TXT_PRIMARY[theme]
+    }
 });
 
 export default styles

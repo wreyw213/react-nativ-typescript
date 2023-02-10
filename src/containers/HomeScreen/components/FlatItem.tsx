@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import styles from "../styles";
 import VideoPlayer from "../../../library/components/VideoPlayer";
 import ProgressiveImage from "./ProgressiveImage";
+import { Theme } from "../../../library/types";
 
 type Props = {
 	index: number,
@@ -12,7 +13,8 @@ type Props = {
 	title?: string,
 	scrollToTop?: () => void,
 	heightOfView: number,
-	media_type: "image" | "video"
+	media_type: "image" | "video",
+	theme: Theme
 }
 
 class FlatItem extends React.PureComponent<Props> {
@@ -45,22 +47,22 @@ class FlatItem extends React.PureComponent<Props> {
 	}
 
 	render() {
-		const { index, media_type, sources, media_small, title, scrollToTop, heightOfView } = this.props;
+		const { index, media_type, sources, media_small, title, scrollToTop, heightOfView, theme } = this.props;
 
 		return (
-			<View style={[styles.cell, { height: heightOfView - 10, marginBottom: 10 }]}>
+			<View style={[styles(theme).cell, { height: heightOfView }]}>
 
-				<View style={[styles.viewTop]}>
+				<View style={[styles(theme).viewTop]}>
 					<TouchableOpacity onPress={scrollToTop}>
-						<Text style={styles.overlayText}>Item no. {index} {media_type}</Text>
-						<Text style={styles.overlayText}>{title}</Text>
+						<Text style={styles(theme).overlayText}>Item no. {index} {media_type}</Text>
+						<Text style={styles(theme).overlayText}>{title}</Text>
 					</TouchableOpacity>
 				</View>
 
 				{media_type == 'image' ?
 					<ProgressiveImage
 						index={index}
-						style={styles.video}
+						style={styles(theme).video}
 						source={{ uri: sources }}
 						thumbnailSource={{ uri: media_small }}
 					/>
@@ -70,10 +72,14 @@ class FlatItem extends React.PureComponent<Props> {
 						ref={(ref) => this.video = ref}
 						source={sources}
 						paused={true}
-						style={styles.video}
+						style={styles(theme).video}
 						repeat={true}
 					/>
 				}
+
+				<Text style={styles(theme).textDescription}>
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor debitis quasi at ducimus quod ipsam corporis, tempore, mollitia ullam cum voluptatem praesentium incidunt quos consequatur suscipit porro, maiores ad quaerat.
+				</Text>
 			</View>
 		);
 	}

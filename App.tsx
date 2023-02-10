@@ -8,7 +8,7 @@
  * @format
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaView, StatusBar, Text, useColorScheme, View } from 'react-native';
 
 import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native';
@@ -21,6 +21,9 @@ import { Directions, Gesture, GestureDetector } from 'react-native-gesture-handl
 import { useDispatch } from 'react-redux';
 import { updateNavigationState } from './src/library/redux/navigationReducer';
 import ScreenConstants from './src/library/constants/ScreenConstants';
+import { updateTheme } from './src/library/redux/appReducer';
+import ColorConstants from './src/library/constants/ColorConstants';
+import useTheme from './src/library/hooks/useTheme';
 
 
 
@@ -36,19 +39,36 @@ function DetailsScreen() {
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const dispatch = useDispatch()
+  const [theme] = useTheme()
+
+  useEffect(() => {
+    dispatch(updateTheme(isDarkMode ? 'dark' : 'light'))
+  }, [])
 
   const Stack = createNativeStackNavigator();
   const routeNameRef = React.useRef(null);
   const navigationRef = React.useRef(null);
 
+  const navigationTheme = {
+    dark: theme == 'dark' ? true : false,
+    colors: {
+      primary: ColorConstants.TXT_PRIMARY[theme],
+      background: ColorConstants.BG_PRIMARY[theme],
+      card: ColorConstants.BG_PRIMARY[theme],
+      text: ColorConstants.TXT_PRIMARY[theme],
+      border: ColorConstants.BG_PRIMARY[theme],
+      notification: ColorConstants.BG_SECONDRY[theme],
+    }
+  }
+
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: isDarkMode ? 'black' : 'white' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: ColorConstants.BG_PRIMARY[theme] }}>
       <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={'black'}
+        barStyle={theme == 'dark' ? 'light-content' : 'dark-content'}
+        backgroundColor={ColorConstants.BG_PRIMARY[theme]}
       />
-      <NavigationContainer ref={navigationRef}
+      <NavigationContainer ref={navigationRef} theme={navigationTheme}
         onReady={() => {
           //@ts-ignore
           routeNameRef.current = navigationRef.current?.getCurrentRoute()?.name;
@@ -57,7 +77,6 @@ const App = () => {
           const previousRouteName = routeNameRef.current;
           //@ts-ignore
           const currentRouteName = navigationRef.current?.getCurrentRoute()?.name;
-          console.log("currentRouteNamecurrentRouteName", currentRouteName);
 
           //@ts-ignore
           dispatch(updateNavigationState(navigationRef.current?.getCurrentRoute()))
