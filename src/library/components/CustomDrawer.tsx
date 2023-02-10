@@ -5,24 +5,25 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch } from 'react-redux';
 import ColorConstants, { Colors } from '../constants/ColorConstants';
 import DimensionsValue from '../utils/DimensionsValue';
-import { updateTheme } from '../redux/appReducer';
+import { updateTheme } from '../redux/themeReducer';
 import useTheme from '../hooks/useTheme';
 import { Theme } from '../types';
+import { AppDispatch } from '../redux/store';
 
 const CustomDrawer: FC<DrawerContentComponentProps> = ({ navigation }) => {
 
 	const [theme] = useTheme()
-	const dispatch = useDispatch();
-	const [isEnabled, setIsEnabled] = useState(theme == 'dark' ? true : false)
+	const dispatch = useDispatch() as AppDispatch;
+	const [isEnabled, setIsEnabled] = useState(theme.type == 'dark' ? true : false)
 
 	useEffect(() => {
-		StatusBar.setBarStyle(theme == 'dark' ? 'light-content' : 'dark-content')
-		setIsEnabled(theme == 'dark' ? true : false)
+		StatusBar.setBarStyle(theme.type == 'dark' ? 'light-content' : 'dark-content')
+		setIsEnabled(theme.type == 'dark' ? true : false)
 	}, [theme])
 
-	console.log("theme", theme)
+
 	return (
-		<SafeAreaView style={{ flex: 1, backgroundColor: ColorConstants.BG_PRIMARY[theme] }} edges={['top', 'right', 'left']}>
+		<SafeAreaView style={{ flex: 1, backgroundColor: theme.BG_PRIMARY }} edges={['top', 'right', 'left']}>
 			<DrawerContentScrollView contentContainerStyle={{ paddingTop: 0, flexGrow: 1, borderTopRightRadius: DimensionsValue.VALUE_20 }} showsVerticalScrollIndicator={false} bounces={false}>
 
 				<View style={{ flex: 1 }} />
@@ -53,7 +54,7 @@ const styles = (theme: Theme) => StyleSheet.create({
 
 	},
 	textDarkMode: {
-		color: ColorConstants.TXT_PRIMARY[theme],
+		color: theme.TXT_PRIMARY,
 		fontSize: DimensionsValue.VALUE_14,
 		marginStart: DimensionsValue.VALUE_10,
 		alignSelf: 'center'

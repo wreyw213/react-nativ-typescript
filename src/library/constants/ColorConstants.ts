@@ -43,21 +43,21 @@ export const Colors = {
  * 2. have to predifene all colors for all defiend theme
  */
 
+export const light_theme = {
+  BG_PRIMARY: Colors.WHITE,
+  BG_SECONDRY: Colors.BLACK,
+  TXT_PRIMARY: Colors.BLACK,
+  TXT_SECONDARY: Colors.WHITE,
+}
+
+export const dark_theme = {
+  BG_PRIMARY: Colors.BLACK,
+  BG_SECONDRY: Colors.WHITE,
+  TXT_PRIMARY: Colors.WHITE,
+  TXT_SECONDARY: Colors.BLACK,
+}
+
 export default {
-  BG_PRIMARY: {
-    dark: Colors.BLACK,
-    light: Colors.WHITE
-  },
-  BG_SECONDRY: {
-    dark: Colors.WHITE,
-    light: Colors.BLACK
-  },
-  TXT_PRIMARY: {
-    dark: Colors.WHITE,
-    light: Colors.BLACK
-  },
-  TXT_SECONDARY: {
-    dark: Colors.BLACK,
-    light: Colors.WHITE
-  }
+  dark: dark_theme,
+  light: light_theme
 }

@@ -21,9 +21,10 @@ import { Directions, Gesture, GestureDetector } from 'react-native-gesture-handl
 import { useDispatch } from 'react-redux';
 import { updateNavigationState } from './src/library/redux/navigationReducer';
 import ScreenConstants from './src/library/constants/ScreenConstants';
-import { updateTheme } from './src/library/redux/appReducer';
+import { updateTheme } from './src/library/redux/themeReducer';
 import ColorConstants from './src/library/constants/ColorConstants';
 import useTheme from './src/library/hooks/useTheme';
+import { AppDispatch } from './src/library/redux/store';
 
 
 
@@ -38,7 +39,7 @@ function DetailsScreen() {
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
-  const dispatch = useDispatch()
+  const dispatch = useDispatch() as AppDispatch
   const [theme] = useTheme()
 
   useEffect(() => {
@@ -50,23 +51,23 @@ const App = () => {
   const navigationRef = React.useRef(null);
 
   const navigationTheme = {
-    dark: theme == 'dark' ? true : false,
+    dark: theme.type == 'dark' ? true : false,
     colors: {
-      primary: ColorConstants.TXT_PRIMARY[theme],
-      background: ColorConstants.BG_PRIMARY[theme],
-      card: ColorConstants.BG_PRIMARY[theme],
-      text: ColorConstants.TXT_PRIMARY[theme],
-      border: ColorConstants.BG_PRIMARY[theme],
-      notification: ColorConstants.BG_SECONDRY[theme],
+      primary: theme.TXT_PRIMARY,
+      background: theme.BG_PRIMARY,
+      card: theme.BG_PRIMARY,
+      text: theme.TXT_PRIMARY,
+      border: theme.BG_PRIMARY,
+      notification: theme.BG_SECONDRY,
     }
   }
 
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: ColorConstants.BG_PRIMARY[theme] }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.BG_PRIMARY }}>
       <StatusBar
-        barStyle={theme == 'dark' ? 'light-content' : 'dark-content'}
-        backgroundColor={ColorConstants.BG_PRIMARY[theme]}
+        barStyle={theme?.type == 'dark' ? 'light-content' : 'dark-content'}
+        backgroundColor={theme.BG_PRIMARY}
       />
       <NavigationContainer ref={navigationRef} theme={navigationTheme}
         onReady={() => {

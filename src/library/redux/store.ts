@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import appReducer from './appReducer';
+import appReducer from './themeReducer';
 import homeSlice from './homeReducer';
 import navigationReducer from './navigationReducer';
 import messageReducer from './reducer';
