@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { View, TouchableOpacity, Image, Text, StyleSheet, ImageSourcePropType, StyleProp, ViewStyle, ImageStyle as NativeImageStyle } from 'react-native';
+import { View, TouchableOpacity, Image, Text, StyleSheet, ImageSourcePropType, StyleProp, ViewStyle, ImageStyle as NativeImageStyle, TextStyle } from 'react-native';
 import {Colors} from '../constants';
 import  { ImageStyle } from 'react-native-fast-image';
 import DimensionsValue from '../utils/DimensionsValue';
@@ -16,7 +16,7 @@ type Props = {
   rightIconStyle?: StyleProp<ImageStyle> & StyleProp<NativeImageStyle>;
   leftIconStyle?: StyleProp<ImageStyle> & StyleProp<NativeImageStyle>;
   headerStyle?: StyleProp<ViewStyle>;
-  titleStyle?: StyleProp<ViewStyle>;
+  titleStyle?: StyleProp<TextStyle>;
   showRightIcon?: boolean | null;
   showUserProfileImage?: boolean;
 };

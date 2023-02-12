@@ -26,6 +26,7 @@ import ColorConstants from './src/library/constants/ColorConstants';
 import useTheme from './src/library/hooks/useTheme';
 import { AppDispatch } from './src/library/redux/store';
 import ThemeScreen from './src/containers/ThemeScreen';
+import ChatScreen from './src/containers/ChatScreen';
 
 
 
@@ -97,6 +98,7 @@ const App = () => {
           <Stack.Screen name={ScreenConstants.TOP_TAB_STACK} component={TopTabNavigation} />
           <Stack.Screen options={{ title: 'Details' }} name={ScreenConstants.DETAILS_SCREEN} component={DetailsScreen} />
           <Stack.Screen name={ScreenConstants.THEME_SCREEN} component={ThemeScreen} />
+          <Stack.Screen name={ScreenConstants.CHAT_SCREEN} component={ChatScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>

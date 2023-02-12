@@ -7,11 +7,18 @@ export default {
 
   MAIN_STACK: [
     {image: images.IC_FIND, screenName: ScreenConstants.HOME_SCREEN},
-    {image: images.IC_CHAT, screenName: ScreenConstants.CHAT_SCREEN},
+    {image: images.IC_CHAT, screenName: ScreenConstants.MESSAGES_SCREEN},
     {
-      image: images.IC_CAMERA,
-      screenName: ScreenConstants.ADD_POST_SCREEN,
+      image: images.IC_HEART_SMALL,
+      screenName: ScreenConstants.MATCHES_SCREEN,
     },
     {image: images.IC_PLAY_BUTTON, screenName: ScreenConstants.FEED_SCREEN},
   ],
+
+  HITSLOP_SMALL:{
+    top: 20,
+    left: 10,
+    bottom: 10,
+    right: 10,
+  }
 };

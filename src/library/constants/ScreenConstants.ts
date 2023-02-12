@@ -5,12 +5,13 @@ const ScreenConstants = {
   PROFILE_SCREEN: 'ProfileScreen',
   USERINFO_SCREEN: 'UserInfoScreen',
   FEED_SCREEN: 'FeedScreen',
-  ADD_POST_SCREEN:'AddPostScreen',
+  ADD_POST_SCREEN: 'AddPostScreen',
 
   NOTIFICATION_SCREEN: 'NotificationScreen',
   SUBSCRIPTION_SCREEN: 'SubscriptionScreen',
   MEDIA_SCREEN: 'MediaScreen',
   CHAT_SCREEN: 'ChatScreen',
+  MESSAGES_SCREEN: 'MessagesScreen',
   DETAILS_SCREEN: 'DetailsScreen',
 
   //navigations Stacks
@@ -19,6 +20,7 @@ const ScreenConstants = {
   TOP_TAB_STACK: 'TopTabStack',
   BOTTOM_STACk: 'BottomStack',
   THEME_SCREEN: 'ThemeScreen',
+  MATCHES_SCREEN: 'MatchesScreen',
 };
 
 export default ScreenConstants

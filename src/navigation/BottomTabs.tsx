@@ -4,8 +4,9 @@ import { MaterialTopTabNavigationProp } from "@react-navigation/material-top-tab
 import React, { FC, useEffect } from "react"
 import ChatScreen from "../containers/ChatScreen";
 import FeedScreen from "../containers/FeedScreen";
-import AddPostScreen from "../containers/HomeScreen";
 import HomeScreen from "../containers/HomeScreen";
+import MatchesScreen from "../containers/MatchesScreen";
+import MessagesScreen from "../containers/MessagesScreen";
 import PlansScreen from "../containers/PlansScreen";
 import SettingsScreen from "../containers/SettingsScreen";
 import UserInfoScreen from "../containers/UserInfoScreen";
@@ -24,10 +25,10 @@ const BottomTab: FC<Props> = ({ topTabNavigation }) => {
       }}
       tabBar={props => <BottomBar {...props} />}>
       <Tab.Screen name={ScreenConstants.HOME_SCREEN} component={HomeScreen} />
-      <Tab.Screen name={ScreenConstants.CHAT_SCREEN} component={ChatScreen} />
+      <Tab.Screen name={ScreenConstants.MESSAGES_SCREEN} component={MessagesScreen} />
       <Tab.Screen
-        name={ScreenConstants.ADD_POST_SCREEN}
-        component={AddPostScreen}
+        name={ScreenConstants.MATCHES_SCREEN}
+        component={MatchesScreen}
       />
       <Tab.Screen
         name={ScreenConstants.FEED_SCREEN}

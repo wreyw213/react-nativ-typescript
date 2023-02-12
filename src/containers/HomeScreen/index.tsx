@@ -23,7 +23,8 @@ const Home: FC<Props> = ({navigation}) => {
     <View style={styles(theme).containerHome}>
       <Header
         title="Discover"
-        rightIcon={images.IC_USER}
+        rightIcon={images.IC_FILTER}
+        titleStyle={{fontWeight:'600'}}
         showRightIcon={true}
         rightIconStyle={styles(theme).imageHeaderProfile}
       />

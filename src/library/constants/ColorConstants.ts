@@ -2,7 +2,7 @@ export const Colors = {
   RED: 'red',
   RED_LIGHT: '#FF2741E6',
   FEILD_PLACEHOLDER: '#999999',
-  WHITE: 'white',
+  WHITE: '#FFFFFF',
   BLACK: '#333333',
   TRANSPARENT: 'transparent',
   GRAY: '#757E90',
