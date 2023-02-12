@@ -14,7 +14,8 @@ type Props = {
   onPressLeft:any
   onPressRight:any
   status:any
-  variant:any
+  variant:any,
+  onPressSuperLike:()=>void
 }
 const CardItem = ({
   actions,
@@ -25,7 +26,8 @@ const CardItem = ({
   onPressLeft,
   onPressRight,
   status,
-  variant
+  variant,
+  onPressSuperLike
 }:Props) => {
   const [theme] = useTheme();
 
@@ -74,7 +76,7 @@ const CardItem = ({
       {/* ACTIONS */}
       {actions && (
         <View style={styles(theme).actionsCardItem}>
-          <TouchableOpacity style={styles(theme).miniButton}>
+          <TouchableOpacity style={styles(theme).miniButton} onPress={() => onPressSuperLike()}>
             <Image style={styles(theme).imageActions} source={images.IC_STAR} />
           </TouchableOpacity>
 

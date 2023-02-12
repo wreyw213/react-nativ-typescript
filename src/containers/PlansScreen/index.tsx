@@ -1341,6 +1341,7 @@ const PlansScreen: React.FC<Props> = ({ navigation }) => {
 				onChangeText={(text: string) => setQuery(text)}
 				returnKeyType={'done'}
 				onSubmitEditing={handleSearch}
+				secureTextEntry
 			/>
 			<MapView
 				//    provider={PROVIDER_GOOGLE} // remove if not using Google Maps

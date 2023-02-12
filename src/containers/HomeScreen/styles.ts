@@ -37,6 +37,12 @@ const styles = (theme: Theme) =>
     containerHome: {
       marginHorizontal: 10,
     },
+    imageHeaderProfile:{
+      width:DimensionsValue.VALUE_30,
+      height:DimensionsValue.VALUE_30,
+      alignSelf:'center',
+      justifyContent:'center',
+    }
   });
 
 export default styles;

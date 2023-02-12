@@ -31,6 +31,7 @@ export default {
   IC_BLOCK: require('./ic_block.png'),
   IC_DELETE: require('./ic_delete.png'),
 
-  IC_FLESH: require('./ic_flash.png')
+  IC_FLESH: require('./ic_flash.png'),
+  IC_USER: require('./ic_user.png')
 
 }

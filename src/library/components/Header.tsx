@@ -3,6 +3,8 @@ import { View, TouchableOpacity, Image, Text, StyleSheet, ImageSourcePropType, S
 import {Colors} from '../constants';
 import  { ImageStyle } from 'react-native-fast-image';
 import DimensionsValue from '../utils/DimensionsValue';
+import { Theme } from '../types';
+import useTheme from '../hooks/useTheme';
 
 
 type Props = {
@@ -12,6 +14,7 @@ type Props = {
   title?: string;
   rightIcon?: ImageSourcePropType;
   rightIconStyle?: StyleProp<ImageStyle> & StyleProp<NativeImageStyle>;
+  leftIconStyle?: StyleProp<ImageStyle> & StyleProp<NativeImageStyle>;
   headerStyle?: StyleProp<ViewStyle>;
   titleStyle?: StyleProp<ViewStyle>;
   showRightIcon?: boolean | null;
@@ -24,15 +27,19 @@ const Header: FC<Props> = ({
   rightIcon,
   tapOnRightIcon,
   rightIconStyle,
+  leftIconStyle,
   headerStyle,
   titleStyle,
   showRightIcon = true,
   showUserProfileImage = false,
   ...titleProps
 }) => {
+
+  const [theme] = useTheme();
+
   return (
-    <View>
-      <View style={[styles.viewHeader, headerStyle]}>
+    <View style={[styles(theme).viewHeader, headerStyle]}>
+      {leftIcon ? (
         <TouchableOpacity
           hitSlop={{top: 15, bottom: 15, left: 15, right: 15}}
           onPress={() => tapOnLeftIcon && tapOnLeftIcon()}
@@ -40,86 +47,42 @@ const Header: FC<Props> = ({
             width: DimensionsValue.VALUE_50,
             paddingStart: DimensionsValue.VALUE_22,
           }}>
-          {leftIcon ? (
-            <Image source={leftIcon} style={{tintColor: Colors.WHITE}} />
-          ) : null}
+          <Image source={leftIcon} style={leftIconStyle} />
         </TouchableOpacity>
-        {title ? (
-          <Text {...titleProps} style={[styles.textTitle, titleStyle]}>
-            {title}
-          </Text>
-        ) : null}
-      </View>
+      ) : null}
+
+      {title ? (
+        <Text {...titleProps} style={[styles(theme).textTitle, titleStyle]}>
+          {title}
+        </Text>
+      ) : null}
+
+      <TouchableOpacity
+        hitSlop={{top: 15, bottom: 15, left: 15, right: 15}}
+        onPress={() => tapOnRightIcon && tapOnRightIcon()}
+        style={{justifyContent:'center'}}
+       >
+        {rightIcon ? <Image source={rightIcon} style={rightIconStyle} /> : null}
+      </TouchableOpacity>
     </View>
   );
 };
 
 export default Header
 
-const styles = StyleSheet.create({
+const styles = (theme:Theme) => StyleSheet.create({
   textTitle: {
-    fontSize: DimensionsValue.VALUE_22,
-    color: Colors.WHITE,
+    fontSize: DimensionsValue.VALUE_28,
+    color: theme.TXT_PRIMARY,
     flex: 1,
-    textAlign: 'center',
   },
   viewHeader: {
     flexDirection: 'row',
-    height: DimensionsValue.VALUE_80,
-    alignItems: 'center',
+    // height: DimensionsValue.VALUE_20,
+    // alignItems: 'center',
     zIndex: 999,
-    backgroundColor: Colors.SKY,
-    borderBottomStartRadius: DimensionsValue.VALUE_30,
-    borderBottomEndRadius: DimensionsValue.VALUE_30
+    backgroundColor: Colors.TRANSPARENT,
+    paddingHorizontal:DimensionsValue.VALUE_10,
+    justifyContent:'space-between',
   },
-  viewTab: {
-    flexDirection: 'row',
-    height: DimensionsValue.VALUE_80,
-    borderBottomLeftRadius: DimensionsValue.VALUE_30,
-    borderBottomRightRadius: DimensionsValue.VALUE_30,
-    backgroundColor: Colors.TAB_BACKGROUND,
-    marginTop: -DimensionsValue.VALUE_40,
-  },
-  textTabItem: {
-    color: Colors.TAB_ITEM,
-    marginTop: 'auto',
-    marginBottom: DimensionsValue.VALUE_7,
-    fontSize: DimensionsValue.VALUE_16,
-  },
-  viewtabItem: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderBottomWidth: 2,
-    borderColor: 'transparent',
-    flexDirection: 'row'
-  },
-  viewLeftActiveTab: {
-    borderBottomLeftRadius: DimensionsValue.VALUE_30,
-    borderLeftWidth: 2,
-    backgroundColor: '#B9DFF8',
-    borderColor: Colors.SKY,
-    marginLeft: -2,
-  },
-  viewRightActiveTab: {
-    borderBottomRightRadius: DimensionsValue.VALUE_30,
-    borderRightWidth: 2,
-    backgroundColor: '#B9DFF8',
-    borderColor: Colors.SKY,
-    marginRight: -2,
-  },
-  viewActiveTab: {
-    // borderBottomLeftRadius:DimensionsValue.VALUE_30,
-    // borderLeftWidth:2,
-    backgroundColor: '#B9DFF8',
-    borderColor: Colors.SKY,
-    marginLeft: -2,
-  },
-  imageTabItem: {
-    marginTop: 'auto',
-    marginBottom: DimensionsValue.VALUE_7,
-    marginRight: DimensionsValue.VALUE_5,
-    width: DimensionsValue.VALUE_16,
-    height: DimensionsValue.VALUE_16,
-  }
 })

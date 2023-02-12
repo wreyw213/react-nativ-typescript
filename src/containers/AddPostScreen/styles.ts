@@ -23,7 +23,7 @@ const styles = (theme: Theme) => StyleSheet.create({
         position: 'absolute',
         right: 0,
         left: 0,
-        zIndex: 999
+        zIndex: 999,
     },
     video: {
         position: 'absolute',
