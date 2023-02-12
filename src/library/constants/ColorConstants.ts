@@ -5,13 +5,19 @@ export const Colors = {
   WHITE: 'white',
   BLACK: '#333333',
   TRANSPARENT: 'transparent',
+  GRAY: '#757E90',
 
   SKY: '#1BA7E7',
   SHADOW_COLOR: '#727272',
   CONTAINER_BACKGROUND_COLOR: '#E5E5E5',
-  LIGHT_GREY: '#D8D8D8',
-  DARK_GREY: '#989898',
+  LIGHT_GRAY: '#D8D8D8',
+  DARK_GRAY: '#363636',
   GREEN: '#25D482',
+  YELLOW: '#FFA200',
+  LIKE_ACTIONS: '#B644B2',
+  FLASH_ACTIONS: '#5028D7',
+  PRIMARY_BUTTON: '#7444C0',
+  SECONDARY_BUTTON:'#5636B8',
 
   TAB_BACKGROUND: '#F4F4F4',
   TAB_ITEM: '#999999',
@@ -35,11 +41,11 @@ export const Colors = {
   COLOR_BUTTON: '#051244',
   BLUE: '#2960FF',
   MESSAGE_RECIVE_COLOR: '#F0F0F0',
-  F4F3F4: '#f4f3f4'
-}
+  F4F3F4: '#f4f3f4',
+};
 
 /**
- * Limitations of this approach 
+ * Limitations of this approach
  * 1. can't add custom Theme
  * 2. have to predifene all colors for all defiend theme
  */
@@ -49,55 +55,55 @@ export const light_theme = {
   BG_SECONDRY: Colors.BLACK,
   TXT_PRIMARY: Colors.BLACK,
   TXT_SECONDARY: Colors.WHITE,
-}
+};
 
 export const dark_theme = {
   BG_PRIMARY: Colors.BLACK,
   BG_SECONDRY: Colors.WHITE,
   TXT_PRIMARY: Colors.WHITE,
   TXT_SECONDARY: Colors.BLACK,
-}
+};
 
 export const red_theme = {
   BG_PRIMARY: Colors.RED_LIGHT,
   BG_SECONDRY: Colors.WHITE,
   TXT_PRIMARY: Colors.WHITE,
   TXT_SECONDARY: Colors.RED_LIGHT,
-}
+};
 
 export const green_theme = {
   BG_PRIMARY: Colors.GREEN,
   BG_SECONDRY: Colors.WHITE,
   TXT_PRIMARY: Colors.WHITE,
   TXT_SECONDARY: Colors.GREEN,
-}
+};
 
 export default {
   dark: dark_theme,
   light: light_theme,
   red: red_theme,
-  green: green_theme
-}
+  green: green_theme,
+};
 
 export const PredefinedThemes = {
   dark: {
     title: 'Dark',
     color: Colors.BLACK,
-    theme: dark_theme
+    theme: dark_theme,
   },
   light: {
     title: 'Light',
     color: Colors.WHITE,
-    theme: light_theme
+    theme: light_theme,
   },
   red: {
     title: 'Red',
     color: Colors.RED,
-    theme: red_theme
+    theme: red_theme,
   },
   green: {
     title: 'Green',
     color: Colors.GREEN,
-    theme: green_theme
-  }
-}
+    theme: green_theme,
+  },
+};

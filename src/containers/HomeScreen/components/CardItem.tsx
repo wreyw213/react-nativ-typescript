@@ -1,8 +1,9 @@
 import React from 'react';
-import styles from './styles';
-
 import { Text, View, Image, Dimensions, TouchableOpacity } from 'react-native';
+import useTheme from '../../../library/hooks/useTheme';
 import images from '../../../library/resources/images';
+import { Theme } from '../../../library/types';
+import styles from './styles';
 
 type Props = {
   actions:boolean
@@ -26,7 +27,8 @@ const CardItem = ({
   status,
   variant
 }:Props) => {
-  // Custom styling
+  const [theme] = useTheme();
+
   const fullWidth = Dimensions.get('window').width;
   const imageStyle = [
     {
@@ -41,22 +43,22 @@ const CardItem = ({
     {
       paddingTop: variant ? 10 : 15,
       paddingBottom: variant ? 5 : 7,
-      color: '#363636',
+      color: theme.TXT_SECONDARY,
       fontSize: variant ? 15 : 30
     }
   ];
 
   return (
-    <View style={styles.containerCardItem}>
+    <View style={styles(theme).containerCardItem}>
       {/* IMAGE */}
       <Image source={image} style={imageStyle} />
 
       {/* MATCHES */}
       {matches && (
-        <View style={styles.matchesCardItem}>
-          <Text style={styles.matchesTextCardItem}>
-            <Image style={styles.imageActions} source={images.IC_HEART} />{' '}
-            {matches}% Match!
+        <View style={styles(theme).matchesCardItem}>
+            <Image style={styles(theme).imageActions} source={images.IC_HEART} />
+          <Text style={styles(theme).matchesTextCardItem}>
+          {' '} {matches}% Match!
           </Text>
         </View>
       )}
@@ -66,28 +68,28 @@ const CardItem = ({
 
       {/* DESCRIPTION */}
       {description && (
-        <Text style={styles.descriptionCardItem}>{description}</Text>
+        <Text style={styles(theme).descriptionCardItem}>{description}</Text>
       )}
 
       {/* ACTIONS */}
       {actions && (
-        <View style={styles.actionsCardItem}>
-          <TouchableOpacity style={styles.miniButton}>
-            <Image style={styles.imageActions} source={images.IC_STAR} />
+        <View style={styles(theme).actionsCardItem}>
+          <TouchableOpacity style={styles(theme).miniButton}>
+            <Image style={styles(theme).imageActions} source={images.IC_STAR} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button} onPress={() => onPressLeft()}>
-            <Image style={styles.imageActions} source={images.IC_HEART} />
+          <TouchableOpacity style={styles(theme).button} onPress={() => onPressLeft()}>
+            <Image style={styles(theme).imageActions} source={images.IC_HEART} />
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.button}
+            style={styles(theme).button}
             onPress={() => onPressRight()}>
-            <Image style={styles.imageActions} source={images.IC_PLUS} />
+            <Image style={[styles(theme).imageActions,styles(theme).imageDisLike]} source={images.IC_PLUS} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.miniButton}>
-            <Image style={styles.imageActions} source={images.IC_FLESH} />
+          <TouchableOpacity style={styles(theme).miniButton}>
+            <Image style={styles(theme).imageActions} source={images.IC_FLESH} />
           </TouchableOpacity>
         </View>
       )}
@@ -96,3 +98,6 @@ const CardItem = ({
 };
 
 export default CardItem;
+
+
+

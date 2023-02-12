@@ -20,8 +20,7 @@ const Home: FC<Props> = ({navigation}) => {
   let swiper: any = useRef(null);
 
   return (
-    <ImageBackground
-      source={require('./assets/images/bg.png')}
+    <View
       style={styles(theme).bg}>
       <View style={styles(theme).containerHome}>
         <View style={styles(theme).top}>{/* top items here */}</View>
@@ -49,7 +48,7 @@ const Home: FC<Props> = ({navigation}) => {
           ))}
         </CardStack>
       </View>
-    </ImageBackground>
+    </View>
   );
 };
 

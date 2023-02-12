@@ -29,10 +29,10 @@ const CustomDrawer: FC<DrawerContentComponentProps> = ({ navigation }) => {
 			<DrawerContentScrollView contentContainerStyle={{ paddingTop: 0, flexGrow: 1, borderTopRightRadius: DimensionsValue.VALUE_20 }} showsVerticalScrollIndicator={false} bounces={false}>
 
 				<View style={{ flex: 1 }} >
-					<Button
+					{/* <Button
 						title={'Theme Settings'}
 						onPress={() => navigation.navigate(ScreenConstants.THEME_SCREEN)}
-					/>
+					/> */}
 				</View>
 
 				<View style={styles(theme).viewSwitch}>
