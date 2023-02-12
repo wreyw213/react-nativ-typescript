@@ -1,5 +1,5 @@
 export default {
-    APP_NAME: 'Akili',
+    APP_NAME: 'MEANDYOU',
 
     UPDATE_APP_DESCRIPTION: 'Please update app to continue.',
     //PlaceHolders

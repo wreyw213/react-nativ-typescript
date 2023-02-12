@@ -1,3 +1,17 @@
+import images from "../resources/images";
+import ScreenConstants from "./ScreenConstants";
+
 export default {
-    THEME_STORE: 'theme_store'
-}
+  THEME_STORE: 'theme_store',
+  TOKEN: 'token',
+
+  MAIN_STACK: [
+    {image: images.IC_FIND, screenName: ScreenConstants.HOME_SCREEN},
+    {image: images.IC_CHAT, screenName: ScreenConstants.CHAT_SCREEN},
+    {
+      image: images.IC_CAMERA,
+      screenName: ScreenConstants.ADD_POST_SCREEN,
+    },
+    {image: images.IC_PLAY_BUTTON, screenName: ScreenConstants.FEED_SCREEN},
+  ],
+};
